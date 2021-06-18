@@ -1,0 +1,22 @@
+{
+  "name": "victordauphin_5_20052021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VictorDauph/VictorDauphin_5_20052021.git"
+  },
+  "author": "Victor Dauphin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VictorDauph/VictorDauphin_5_20052021/issues"
+  },
+  "homepage": "https://github.com/VictorDauph/VictorDauphin_5_20052021#readme",
+  "dependencies": {
+    "bootstrap": "^5.0.1"
+  }
+}
