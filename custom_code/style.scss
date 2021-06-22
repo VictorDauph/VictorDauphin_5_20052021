@@ -38,3 +38,43 @@ a:focus
 {
     width: 10rem;
 }
+
+//Apparition éléments
+@keyframes apparition
+{
+  0%
+  {
+    transform: translateY(200%);
+    opacity: 0;
+  } 
+  45%
+  {
+    transform: translateY(-5%);
+  }
+  100%
+  {
+    transform: translateY(0);
+  }
+}
+
+//animations d'apparition: ajouter classe anim aux éléments à faire apparaître
+$dureeApparition:1000ms;
+.anim
+{
+    transform: translateY(200%);
+    animation: apparition $dureeApparition 0s;
+    animation-fill-mode: forwards;
+}
+
+//effet hover
+$dureeHover:300ms;
+a
+{
+    scale: (1);
+    transition: transform $dureeHover;
+}
+a:hover             
+{
+    transform: scale(1.1);
+    
+}

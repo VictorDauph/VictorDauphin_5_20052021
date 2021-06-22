@@ -10756,4 +10756,31 @@ a:focus {
   width: 10rem;
 }
 
+@keyframes apparition {
+  0% {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(-5%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.anim {
+  transform: translateY(200%);
+  animation: apparition 1000ms 0s;
+  animation-fill-mode: forwards;
+}
+
+a {
+  scale: 1;
+  transition: transform 300ms;
+}
+
+a:hover {
+  transform: scale(1.1);
+}
+
 /*# sourceMappingURL=style.css.map */
