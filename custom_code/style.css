@@ -10752,8 +10752,8 @@ a:focus {
   border: solid 3px #8F5BFE;
 }
 
-#boutonPanier {
-  width: 90px;
+.boutonWidth {
+  width: 10rem;
 }
 
 /*# sourceMappingURL=style.css.map */
