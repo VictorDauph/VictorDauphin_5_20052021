@@ -1,3 +1,40 @@
 @import "variables_overrides";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
+//polices personnalisées
+@font-face
+{
+    font-family: "titles";
+    src: url("../ressources/fonts/GloriaHallelujah.ttf") format("truetype");
+}
+
+@font-face
+{
+    font-family: "base";
+    src: url("../ressources/fonts/Quicksand-Regular.otf") format("opentype");
+}
+
+*
+{
+    font-family: base;
+    color: $primary;
+    font-weight: bold;
+}
+h1, h2, h3, h4, h5
+{
+    font-family: titles;
+    color: $primary;
+    
+}
+
+//accessibilité
+a:focus
+{
+    border: solid 3px $secondary;
+}
+
+//centrage bouton panier
+#boutonPanier
+{
+    width: 90px;
+}

@@ -2,6 +2,10 @@
 Lancer sass (depuis dossier racine):
 sass --watch custom_code/style.scss:custom_code/style.css 
 
+Lancer le serveur, depuis JWDP5:
+
+node server
+
 URLs API
 Ours en peluche faits à la main : ​http://localhost:3000/api/teddies
 

@@ -3,15 +3,79 @@
     <head>
         
         <meta charset="UTF-8" />
-        <title>tests de serveur</title>
+        <title>Orinoco</title>
         <link rel="stylesheet" href="custom_code/style.css" />  <!--link fichier CSS-->
+        <script src="https://kit.fontawesome.com/8466c28965.js" crossorigin="anonymous"></script> <!-- lien fontawesome pour les icônes-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- permet au navigateur d'utiliser la largeur réelle du device mobile pour appliquer les effets responsive.-->
         
     </head>
 
     <body>
-       <button id="btn"> button </button>
-       <div id="displ" class="card">ho no</div>
+       <header class="bg-light py-3 shadow-sm"> 
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-2">
+                        <a class="d-flex align-items-center text-decoration-none" href="index.html"> <img src="ressources/images/logo.png" alt="logo" class="w-">
+                        <i class="fas fa-arrow-left mt-4 fs-3 text-secondary d-none"></i> </a> <!-- flèche supprimer d-none pour faire apparaître -->
+                    </div>
+                    <div class="col-9"></div>
+                    <a class="col align-items-center text-decoration-none" href="custom_code/pages_HTML/panier.html"> <i class="fas fa-shopping-basket text-secondary fs-1 "></i> <!-- panier --> </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="hero container-fluid my-5">
+            <div class="row">
+                <div class=col-md-3></div>
+                <div class="col-md-6 col-12 bg-light p-3 shadow rounded">
+                    <h1>Nos Articles</h1>
+                    <h2>Bienvenue sur Orinoco <br>
+                        Le meilleur site marchand généraliste</h2>
+                    <P class="mt-2">
+                        Ici vous trouverez les meilleurs peluches, meubles 
+                        et appareils photos du marché.
+                        Choisissez un produit pour le personnaliser
+                    </P>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row mt-5 px-5">
+                <a href="/custom_code/pages_HTML/product.html" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
+                    <img src="JWDP5/images/vcam_1.jpg" class="card-img-top border-bottom border-secondary" alt="appareil photo">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Nos appareils photos</h3>
+                        <p class="card-text">
+                            Nous excellents appareils
+                            photos viennent de 
+                            Dordogne et contiennent
+                            des pixels argentiques.
+                        </p>
+                    </div>
+                </a>
+                <div class="col-md-1"></div>
+                <a href="/custom_code/pages_HTML/product.html" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
+                    <img src="JWDP5/images/oak_2.jpg" class="card-img-top border-bottom border-secondary" alt="table en chêne">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Nos meubles pur chêne</h3>
+                        <p class="card-text">
+                            Nous excellents meubles viennent de Dordogne et contiennent du chêne Dordognon
+                        </p>
+                    </div>
+                </a>
+                <div class="col-md-1"></div>
+                <a href="/custom_code/pages_HTML/product.html" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
+                    <img src="JWDP5/images/teddy_1.jpg" class="card-img-top border-bottom border-secondary" alt="chêne">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Nos peluches</h3>
+                        <p class="card-text">
+                            Nous peluches sont fabriquées à Castelnaud-la-Chapelle à base de peau d'ours sauvages.
+                        </p>
+                    </div>
+                </a>
+                
+            </div>
+        </main>
+
 
 
        <script type="text/javascript" src="custom_code/scripts.js"></script> <!-- link fichier javascript doit être à la fin du fichier HTML-->
