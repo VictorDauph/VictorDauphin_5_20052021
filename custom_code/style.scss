@@ -1,6 +1,18 @@
 @import "variables_overrides";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
+/*
+Primary: #8F5BFE
+dark: #1F016D
+light: #E1E0FF
+
+font title: Gloria Hallelujah
+font principale: Quicksand-Regular
+
+Lancer sass (depuis dossier racine):
+sass --watch custom_code/style.scss:custom_code/style.css 
+*/
+
 //polices personnalisées
 @font-face
 {

@@ -1,8 +1,12 @@
+/*
+Lancer le serveur, depuis JWDP5:
+
+node server
+*/
+
+
 
 // fonctions d'affichage des produits
-
-//il y'a un problème avec la declaration des variables
-
 
 eraseProductsContainer(); //effacer le conteneur
 function eraseProductsContainer() //effacer le conteneur
