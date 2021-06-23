@@ -1,6 +1,8 @@
 //variables affichage des produits. Elements du DOM
-let productsContainer= document.getElementById("productsContainer");
-
+const productsContainer= document.getElementById("productsContainer");
+const mainCameraImg = document.getElementById("mainCameraImg");
+const mainOakImg = document.getElementById("mainOakImg");
+const mainTeddiesImg = document.getElementById("mainTeddiesImg");
 
 //localisation des cartes
 let cameraProduct = document.getElementById("cameraProduct");
