@@ -15,7 +15,7 @@
             <nav class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-3">
-                        <a class="d-flex align-items-center text-decoration-none hoverGrow" href="index.html"> <img src="ressources/images/logo.png" alt="Orinico" class="">
+                        <a class="d-flex align-items-center text-decoration-none" href="index.html"> <img src="ressources/images/logo.png" alt="Orinico" class="">
                         <i class="fas fa-home mt-4 fs-3 text-secondary mx-5 d-none"></i> </a> <!-- maison supprimer d-none pour faire apparaître -->
                     </div>
                     <div class="col-8"></div>
@@ -39,7 +39,7 @@
             </div>
             <section class="row mt-5 px-5">
                 <div class="col-md"></div>
-                <a href="./custom_code/pages_HTML/product.html" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3 hoverGrow">
+                <a href="#productsContainer" id="cameraProduct" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
                     <img src="JWDP5/images/vcam_1.jpg" class="card-img-top border-bottom border-secondary" alt="appareil photo">
                     <div class="card-body">
                         <h3 class="card-title text-center">Nos appareils photos</h3>
@@ -52,7 +52,7 @@
                     </div>
                 </a>
                 <div class="col-md"></div>
-                <a href="./custom_code/pages_HTML/product.html" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
+                <a href="#productsContainer" id="oakProduct" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
                     <img src="JWDP5/images/oak_2.jpg" class="card-img-top border-bottom border-secondary" alt="table en chêne">
                     <div class="card-body">
                         <h3 class="card-title text-center">Nos meubles pur chêne</h3>
@@ -62,7 +62,7 @@
                     </div>
                 </a>
                 <div class="col-md"></div>
-                <a href="./custom_code/pages_HTML/product.html" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
+                <a href="#productsContainer" id="teddiesProduct" class="card col-md-3 bg-light shadow text-decoration-none gx-0 mb-3">
                     <img src="JWDP5/images/teddy_1.jpg" class="card-img-top border-bottom border-secondary" alt="peluche">
                     <div class="card-body">
                         <h3 class="card-title text-center">Nos peluches</h3>
@@ -75,9 +75,12 @@
                 
             </section>
         </main>
+        <section id="productsContainer" class="container-fluid d-flex flex-wrap justify-content-around border shadow rounded">
+            
+        </section>
 
 
-
+        <script src="custom_code/variables.js"></script> <!-- link fichier javascript doit être à la fin du fichier HTML-->
        <script src="custom_code/scripts.js"></script> <!-- link fichier javascript doit être à la fin du fichier HTML-->
        <!--Bibliothèques JS pour bootstrap. Laisser en dernier-->
        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -1,20 +1,58 @@
-let display = document.getElementById('displ');
+
+// fonctions d'affichage des produits
+
+//il y'a un problème avec la declaration des variables
 
 
-//let ourson = fetch("http://localhost:3000/api/teddies");
-//console.log(ourson);
+eraseProductsContainer(); //effacer le conteneur
+function eraseProductsContainer() //effacer le conteneur
+ {
+    productsContainer.innerHTML = " ";
+    console.log("container erased");
+ }
 
-/*fetch("http://localhost:3000/api/teddies")
-    .then(res => res.json());
-            {
-                if(res.ok)
-            {console.log ('Success!')}
-                else{console.log("error from backend")}
-            
-            }
-    .then(data => console.log(data))
-    .catch(error => console.log("error from frontend!!")) */
+// surveiller les cartes produits, et déclencher les fonctions display en fonction de la carte clickée 
+cameraProduct.addEventListener('click', displayCamera);
+oakProduct.addEventListener('click', displayOak); 
+teddiesProduct.addEventListener('click', displayTeddies); 
+ 
+// les fonctions displays appellent la fonction d'affichage en passant des arguments différents. Ces arguments sont les noms des objets à afficher.
+function displayTeddies()
+    {
+        
+        affichageExample(cardTeddies);
+        
+    } 
 
-    //fetch("http://localhost:3000/api/teddies").then(res=>res.json()).then(data=> console.log(data) );
+function displayOak()
+    {
+        
+        affichageExample(cardOak);
+        
+    } 
 
-    console.log("coucou");
+
+    function displayCamera()
+    {
+        
+        affichageExample(cardcamera);
+        
+    } 
+
+// La fonction d'affichage affiche les éléments voulus en utilisant l'argument envoyé par l'une des fonctions display.
+function affichageExample(card) 
+    {
+        productsContainer.innerHTML = card.content;
+        console.log("container", card.id);
+    }
+
+ 
+
+ 
+
+
+
+
+
+
+
