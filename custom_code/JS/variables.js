@@ -5,8 +5,9 @@ const mainOakImg = document.getElementById("mainOakImg");
 const mainTeddiesImg = document.getElementById("mainTeddiesImg");
 
 //localisation des cartes
-let cameraProduct = document.getElementById("cameraProduct");
-let oakProduct = document.getElementById("oakProduct");
+const cameraProduct = document.getElementById("cameraProduct");
+const oakProduct = document.getElementById("oakProduct");
+const teddiesProduct = document.getElementById("teddiesProduct");
 
 //variables affichage des produits. Cartes à afficher
 

@@ -21,17 +21,18 @@ oakProduct.addEventListener('click', displayOak);
 teddiesProduct.addEventListener('click', displayTeddies); 
  
 // les fonctions displays appellent la fonction d'affichage en passant des arguments différents. Ces arguments sont les noms des objets à afficher.
+
 function displayTeddies()
     {
         
-        affichageExample(cardTeddies);
+        displayProduct(cardTeddies);
         
     } 
 
 function displayOak()
     {
         
-        affichageExample(cardOak);
+        displayProduct(cardOak);
         
     } 
 
@@ -39,16 +40,10 @@ function displayOak()
     function displayCamera()
     {
         
-        affichageExample(cardcamera);
+        displayProduct(cardcamera);
         
     } 
 
-// La fonction d'affichage affiche les éléments voulus en utilisant l'argument envoyé par l'une des fonctions display.
-function affichageExample(card) 
-    {
-        productsContainer.innerHTML = card.content;
-        console.log("container", card.id);
-    }
 
  
 

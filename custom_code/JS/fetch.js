@@ -26,15 +26,16 @@ fetch('http://localhost:3000/api/teddies')
     .then(data => mainTeddiesImg.src =  data[0].imageUrl) // on extrait l'image de l'objet 0 de l'array et on l'envoie à l'emplacement de la carte
 
 // On récupère les données des appareils photos
-//il faut apprendre promise.all()
+
 /*
 class cameraCards
 {   
-        
+       
         constructor(img)
         {
             fetch('http://localhost:3000/api/cameras')
                 .then(res => res.json())
+                .then(console.log(card.name))
                 .then(data => mainCameraImg.src =  data[0].imageUrl
             
                     this.id= "cardcamera";
@@ -49,8 +50,8 @@ class cameraCards
                                                 des pixels argentiques.
                                             </p>
                                         </div>
-                                    </a>`;
-        }
+                                    </a>`; 
+                    } 
 }
 */
 
