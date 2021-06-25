@@ -25,7 +25,7 @@ teddiesProduct.addEventListener('click', displayTeddies);
 function displayTeddies()
     {
         
-        FetchCards(cardTeddies);
+        displayProduct(cardTeddies);
         
     } 
 

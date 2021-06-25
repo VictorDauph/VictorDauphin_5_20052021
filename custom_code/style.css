@@ -10794,4 +10794,8 @@ a:hover {
   transform: scale(1.1);
 }
 
+#productsContainer {
+  min-height: 500px;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -30,7 +30,9 @@ fetch('http://localhost:3000/api/teddies')
 /*
 function FetchCards(card)
 {
-    function()
+    console.log(card.id);
+    fetch(card.url);
+   /* function()
     {
         if (card==cardCamera)
             {fetch('http://localhost:3000/api/cameras')}
@@ -47,5 +49,5 @@ function FetchCards(card)
         const cardDescriptionContent = document.createTextNode(data[0].description);
         }
 
-}
-*/
+} */
+
