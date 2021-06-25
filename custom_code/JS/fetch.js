@@ -25,34 +25,27 @@ fetch('http://localhost:3000/api/teddies')
     //.then(data => console.log(data)) //on affiche le résultat du parsing (array Json) dans la console
     .then(data => mainTeddiesImg.src =  data[0].imageUrl) // on extrait l'image de l'objet 0 de l'array et on l'envoie à l'emplacement de la carte
 
-// On récupère les données des appareils photos
+// Fonction FecthCard pour aller fetcher les données en foncions de la carte cliquée
 
 /*
-class cameraCards
-{   
-       
-        constructor(img)
+function FetchCards(card)
+{
+    function()
+    {
+        if (card==cardCamera)
+            {fetch('http://localhost:3000/api/cameras')}
+        else if (card==cardOak)
+            {fetch('http://localhost:3000/api/furniture')}
+        else (card==cardTeddies)
+            {fetch('http://localhost:3000/api/teddies')}
+    }
+    .then(res => res.json()) // on parse la réponse de la requête en json
+    .then(data => 
         {
-            fetch('http://localhost:3000/api/cameras')
-                .then(res => res.json())
-                .then(console.log(card.name))
-                .then(data => mainCameraImg.src =  data[0].imageUrl
-            
-                    this.id= "cardcamera";
-                    this.content=    `  <a href="./custom_code/pages_HTML/product.html" class=" anim card col-md-3 bg-light shadow text-decoration-none gx-0 m-3">
-                                        <img src="JWDP5/images/vcam_1.jpg" class="card-img-top border-bottom border-secondary" alt="appareil photo">
-                                        <div class="card-body">
-                                            <h3 class="card-title text-center">Nos appareils photos</h3>
-                                            <p class="card-text">
-                                                Nous excellents appareils
-                                                photos viennent de 
-                                                Dordogne et contiennent
-                                                des pixels argentiques.
-                                            </p>
-                                        </div>
-                                    </a>`; 
-                    } 
+        const pictureCardUrl = data[0].imageUrl;
+        const cardTitleContent = document.createTextNode(data[0].name);
+        const cardDescriptionContent = document.createTextNode(data[0].description);
+        }
+
 }
 */
-
-

@@ -11,7 +11,7 @@ const teddiesProduct = document.getElementById("teddiesProduct");
 
 //variables affichage des produits. Cartes à afficher
 
-const cardcamera = 
+const cardCamera = 
 {
 id: "cardcamera",
 content:    `<a href="./custom_code/pages_HTML/product.html" class=" anim card col-md-3 bg-light shadow text-decoration-none gx-0 m-3">

@@ -25,7 +25,7 @@ teddiesProduct.addEventListener('click', displayTeddies);
 function displayTeddies()
     {
         
-        displayProduct(cardTeddies);
+        FetchCards(cardTeddies);
         
     } 
 
@@ -40,7 +40,7 @@ function displayOak()
     function displayCamera()
     {
         
-        displayProduct(cardcamera);
+        displayProduct(cardCamera);
         
     } 
 
