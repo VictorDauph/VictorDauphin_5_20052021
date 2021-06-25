@@ -1,10 +1,6 @@
-/*
-Lancer le serveur, depuis JWDP5:
-
+/* Lancer le serveur, depuis JWDP5:
 node server
 */
-
-
 
 // fonctions d'affichage des produits
 
@@ -23,26 +19,13 @@ teddiesProduct.addEventListener('click', displayTeddies);
 // les fonctions displays appellent la fonction d'affichage en passant des arguments différents. Ces arguments sont les noms des objets à afficher.
 
 function displayTeddies()
-    {
-        
-        displayProduct(cardTeddies);
-        
-    } 
+    {displayProduct(cardTeddies);} 
 
 function displayOak()
-    {
-        
-        displayProduct(cardOak);
-        
-    } 
+    {displayProduct(cardOak);} 
 
-
-    function displayCamera()
-    {
-        
-        displayProduct(cardCamera);
-        
-    } 
+function displayCamera()
+    {displayProduct(cardCamera);} 
 
 
  

@@ -4,7 +4,7 @@ const mainCameraImg = document.getElementById("mainCameraImg");
 const mainOakImg = document.getElementById("mainOakImg");
 const mainTeddiesImg = document.getElementById("mainTeddiesImg");
 
-//localisation des cartes
+//localisation des 3 cartes principale d'index.html
 const cameraProduct = document.getElementById("cameraProduct");
 const oakProduct = document.getElementById("oakProduct");
 const teddiesProduct = document.getElementById("teddiesProduct");
