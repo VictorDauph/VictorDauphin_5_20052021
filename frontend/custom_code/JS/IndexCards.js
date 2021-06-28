@@ -50,10 +50,10 @@ function StorageTeddies()
 
 //Fonction localStorage, variable sotckée sur le navigateur à utiliser par le script product
 
-function Storage(cardsToDisplay)
+function Storage(urlToFetch)
     {
-        localStorage.setItem("cardToDisplay",cardsToDisplay);
-        console.log("storing " + cardsToDisplay);
+        localStorage.setItem("urlToFetch",urlToFetch);
+        console.log("storing " + urlToFetch);
     }
 
 

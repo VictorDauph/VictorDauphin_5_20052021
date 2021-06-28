@@ -25,9 +25,9 @@ function eraseProductsContainer() //effacer le conteneur
 
 function selectDisplay()
     {
-        let cardToDisplay = localStorage.getItem("cardToDisplay");
-        console.log("LocalStorage récupéré: ",cardToDisplay);
-        displayProduct(cardToDisplay);
+        let urlToFetch = localStorage.getItem("urlToFetch");
+        console.log("LocalStorage récupéré: ", urlToFetch);
+        displayProduct(urlToFetch);
     }
     
 //la classe productCards produit une carte produit
@@ -81,17 +81,17 @@ class productCards
 
 
 
-    function displayProduct(cardType) 
+    function displayProduct(urlToFetch) 
         {
-            console.log("display product lancé: ", cardType);
+            console.log("display product lancé: ", urlToFetch);
             eraseProductsContainer()
-            fetch(cardType) // remplacer Url par variable cardType
+            fetch(urlToFetch) 
             .then(res => res.json()) // on parse la réponse de la requête en json
             .then(data => {
                 
                 data.forEach(item => {
                     console.log(item._id)
-                    let card = new productCards(cardType,item)
+                    let card = new productCards(urlToFetch,item)
                 })
             
                         
