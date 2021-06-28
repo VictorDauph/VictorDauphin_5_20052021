@@ -10738,15 +10738,15 @@ font title: Gloria Hallelujah
 font principale: Quicksand-Regular
 
 Lancer sass (depuis dossier racine):
-sass --watch custom_code/style.scss:custom_code/style.css 
+sass --watch custom_code/SCSS/style.scss:custom_code/CSS/style.css 
 */
 @font-face {
   font-family: "titles";
-  src: url("../ressources/fonts/GloriaHallelujah.ttf") format("truetype");
+  src: url("../../ressources/fonts/GloriaHallelujah.ttf") format("truetype");
 }
 @font-face {
   font-family: "base";
-  src: url("../ressources/fonts/Quicksand-Regular.otf") format("opentype");
+  src: url("../../ressources/fonts/Quicksand-Regular.otf") format("opentype");
 }
 * {
   font-family: base;

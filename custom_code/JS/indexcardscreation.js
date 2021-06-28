@@ -7,23 +7,31 @@ Caméras vintage : ​http://localhost:3000/api/cameras
 Meubles en chêne : ​http://localhost:3000/api/furniture
 */
 
-// On affiche les images des cartes principales de la page d'accueil.
-
-fetch('http://localhost:3000/api/cameras')
-    .then(res => res.json()) // on parse la réponse de la requête en json
-    .then(data => mainCameraImg.src =  data[0].imageUrl) // on extrait l'image de l'objet 0 de l'array et on l'envoie à l'emplacement de la carte
-
-fetch('http://localhost:3000/api/furniture')
-    .then(res => res.json()) // on parse la réponse de la requête en json
-    .then(data => mainOakImg.src =  data[1].imageUrl) // on extrait l'image de l'objet 0 de l'array et on l'envoie à l'emplacement de la carte
-
-fetch('http://localhost:3000/api/teddies')
-    .then(res => res.json()) // on parse la réponse de la requête en json
-    .then(data => mainTeddiesImg.src =  data[0].imageUrl) // on extrait l'image de l'objet 0 de l'array et on l'envoie à l'emplacement de la carte
-
-
 
 // génération de cartes produits page principale
+
+//eraseProductsContainer(); //effacer le conteneur au chargement de la page
+function eraseProductsContainer() //effacer le conteneur
+ {
+    productsContainer.innerHTML = " ";
+    console.log("container erased");
+ }
+
+// surveiller les cartes produits, et déclencher les fonctions display en fonction de la carte clickée 
+cameraProduct.addEventListener('click', displayCamera);
+oakProduct.addEventListener('click', displayOak); 
+teddiesProduct.addEventListener('click', displayTeddies); 
+ 
+// les fonctions displays appellent la fonction d'affichage en passant des arguments différents. Ces arguments sont les noms des objets à afficher.
+
+function displayTeddies()
+    {displayProduct(cardTeddies);} 
+
+function displayOak()
+    {displayProduct(cardOak);} 
+
+function displayCamera()
+    {displayProduct(cardCamera);} 
 //la classe productCards produit une carte produit
 
 class productCards
