@@ -7,6 +7,8 @@ Caméras vintage : ​http://localhost:3000/api/cameras
 Meubles en chêne : ​http://localhost:3000/api/furniture
 */
 
+//Récupérer le container d'affichage des produits.
+const productsContainer= document.getElementById("productsContainer");
 
 // génération de cartes produits page principale
 
@@ -17,28 +19,24 @@ function eraseProductsContainer() //effacer le conteneur
     console.log("container erased");
  }
 
-// surveiller les cartes produits, et déclencher les fonctions display en fonction de la carte clickée 
-cameraProduct.addEventListener('click', displayCamera);
-oakProduct.addEventListener('click', displayOak); 
-teddiesProduct.addEventListener('click', displayTeddies); 
- 
+
+
 // les fonctions displays appellent la fonction d'affichage en passant des arguments différents. Ces arguments sont les noms des objets à afficher.
 
-function displayTeddies()
-    {displayProduct(cardTeddies);} 
-
-function displayOak()
-    {displayProduct(cardOak);} 
-
-function displayCamera()
-    {displayProduct(cardCamera);} 
+function selectDisplay()
+    {
+        let cardToDisplay = localStorage.getItem("cardToDisplay");
+        console.log("LocalStorage récupéré: ",cardToDisplay);
+        displayProduct(cardToDisplay);
+    }
+    
 //la classe productCards produit une carte produit
 
 class productCards
 {
     constructor(cardType,product) //cardType fournit l'URL à aller chercher (ficher variables.js) et cardNumber correspond à l'index de l'objet à aller cherher.
     {
-        fetch(cardType.url)
+        fetch(cardType)// remplacer Url par variable cardType
             .then(res => res.json()) // on parse la réponse de la requête en json
             //.then(data => console.log(data)) //on affiche le résultat du parsing (array Json) dans la console
             .then(data => 
@@ -85,8 +83,9 @@ class productCards
 
     function displayProduct(cardType) 
         {
+            console.log("display product lancé: ", cardType);
             eraseProductsContainer()
-            fetch(cardType.url)
+            fetch(cardType) // remplacer Url par variable cardType
             .then(res => res.json()) // on parse la réponse de la requête en json
             .then(data => {
                 
@@ -99,7 +98,7 @@ class productCards
                     
         })} 
     
-
+selectDisplay() //lancer la selection et l'affichage au chargement de la page.
 
 
 
