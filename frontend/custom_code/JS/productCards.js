@@ -150,5 +150,17 @@ class productCards
 selectDisplay() //lancer la selection et l'affichage au chargement de la page.
 
 
+//test localStorage
+const testArray = ["Apple", "Banana"];
+console.log (testArray[0]);
+
+localStorage.setItem ("testArrayStr", JSON.stringify(testArray));
+
+const testArrayIsBack = JSON.parse(localStorage.getItem("testArrayStr"));
+console.log ( testArrayIsBack[1]);
+
+// Utiliser la technique précédente pour transmettre un objet qui contient le contenu du panier à la page panier.
+// Comment l'utilisateur ajoute t-il un élément au panier? il entre un nombre dans une case et il appuie sur un bouton qui lit toutes les cases... On utilise les ID pour relier un produit au nombre d'éléments dans le panier...
+//un seul élément valier, un input qui valide qu'il s'agit bien d'un nombre à l'intérieur...
 
 

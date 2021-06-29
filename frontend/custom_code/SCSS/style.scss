@@ -90,3 +90,11 @@ a:hover
     transform: scale(1.1);
     
 }
+
+// dimensionnement images
+img
+{
+    max-height: 300px;
+    object-fit: cover;
+    object-position: center;
+}

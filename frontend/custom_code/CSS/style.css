@@ -10794,4 +10794,10 @@ a:hover {
   transform: scale(1.1);
 }
 
+img {
+  max-height: 300px;
+  object-fit: cover;
+  object-position: center;
+}
+
 /*# sourceMappingURL=style.css.map */
