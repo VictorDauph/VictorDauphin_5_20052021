@@ -106,6 +106,18 @@ class productCards
                                             listElement.appendChild(listElementContent);
                                         })
                                 }
+                            
+                                //création input nombre à ajouter au panier
+                                const numberInputLabel = document.createElement("label");
+                                linkContainerCard.appendChild(numberInputLabel);
+                                const numberInputLabelContent = document.createTextNode("Commander:");
+                                numberInputLabel.appendChild(numberInputLabelContent);
+                                const numberInputBasket = document.createElement("input");
+                                linkContainerCard.appendChild(numberInputBasket);
+                                numberInputLabel.classList.add("mx-3", "mb-3");
+                                numberInputBasket.setAttribute("type","number");
+                                numberInputBasket.classList.add("w-25", "mx-3","numberInput");
+
                                
                         })}}
 
@@ -151,16 +163,20 @@ selectDisplay() //lancer la selection et l'affichage au chargement de la page.
 
 
 //test localStorage
-const testArray = ["Apple", "Banana"];
-console.log (testArray[0]);
+let obj1 = {"fruit": "banana"};
+let obj2 = {"vegetable": "Cucumber"};
 
-localStorage.setItem ("testArrayStr", JSON.stringify(testArray));
+let testObject = Object.assign(obj1, obj2);
 
-const testArrayIsBack = JSON.parse(localStorage.getItem("testArrayStr"));
-console.log ( testArrayIsBack[1]);
+
+console.log (testObject.fruit);
+
+localStorage.setItem ("testObjectStr", JSON.stringify(testObject));
+
+const testObjectIsBack = JSON.parse(localStorage.getItem("testObjectStr"));
+console.log ( testObjectIsBack.vegetable);
 
 // Utiliser la technique précédente pour transmettre un objet qui contient le contenu du panier à la page panier.
-// Comment l'utilisateur ajoute t-il un élément au panier? il entre un nombre dans une case et il appuie sur un bouton qui lit toutes les cases... On utilise les ID pour relier un produit au nombre d'éléments dans le panier...
-//un seul élément valier, un input qui valide qu'il s'agit bien d'un nombre à l'intérieur...
-
+// Comment l'utilisateur ajoute t-il un élément au panier? il entre un nombre dans une case, les cases mettent à jour automatiquement des variables... On utilise les ID pour relier un produit au nombre d'éléments dans le panier...
+//quand on valide le panier avec l'un des deux boutons les variables sont assignées à un objet, qui est transmis à la page panier avec localstorage.
 
