@@ -10,7 +10,7 @@ font title: Gloria Hallelujah
 font principale: Quicksand-Regular
 
 Lancer sass (depuis dossier racine):
-sass --watch custom_code/SCSS/style.scss:custom_code/CSS/style.css 
+sass --watch frontend/custom_code/SCSS/style.scss:frontend/custom_code/CSS/style.css 
 */
 
 //polices personnalisées
@@ -89,10 +89,4 @@ a:hover
 {
     transform: scale(1.1);
     
-}
-
-//paramétrage productsContainer
-#productsContainer
-{
-    min-height: 1000px;
 }

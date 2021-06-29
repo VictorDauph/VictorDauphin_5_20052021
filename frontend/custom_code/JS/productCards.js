@@ -10,6 +10,9 @@ Meubles en chêne : ​http://localhost:3000/api/furniture
 //Récupérer le container d'affichage des produits.
 const productsContainer= document.getElementById("productsContainer");
 
+//Emplacement dynamique du titre
+const titreProduit =  document.getElementById("titreProduit");
+
 // génération de cartes produits page principale
 
 //eraseProductsContainer(); //effacer le conteneur au chargement de la page
@@ -34,7 +37,7 @@ function selectDisplay()
 
 class productCards
 {
-    constructor(cardType,product) //cardType fournit l'URL à aller chercher (ficher variables.js) et cardNumber correspond à l'index de l'objet à aller cherher.
+    constructor(cardType,product) //cardType fournit l'URL à aller chercher et prodcut correspond à l'index de l'objet à aller cherher.
     {
         fetch(cardType)// remplacer Url par variable cardType
             .then(res => res.json()) // on parse la réponse de la requête en json
@@ -46,13 +49,14 @@ class productCards
                                 const pictureCardUrl = product.imageUrl;
                                 const cardTitleContent = document.createTextNode(product.name);
                                 const cardDescriptionContent = document.createTextNode(product.description);
-                                
-                                
+                                const optionName = Object.keys(product)[0];
+                                const optionChoices = Object.values(product)[0];
+
                                 //création du cadre de la carte
-                                const linkContainerCard = document.createElement("a");
+                                const linkContainerCard = document.createElement("div");
                                 productsContainer.appendChild(linkContainerCard);
                                 linkContainerCard.classList.add("anim", "card", "col-md-3", "bg-light", "shadow", "text-decoration-none", "gx-0", "m-3");
-                                linkContainerCard.setAttribute("href","./custom_code/pages_HTML/product.html")
+                                
                                     
                                 //création image de la carte
                                 const pictureCardTag = document.createElement("img");
@@ -66,7 +70,7 @@ class productCards
                                 cardBody.classList.add("card-body");
                                 
                                 //création titre
-                                const cardTitleTag = document.createElement("h3");
+                                const cardTitleTag = document.createElement("h2");
                                 cardTitleTag.classList.add("card-title", "text-center");
                                 cardBody.appendChild(cardTitleTag);
                                 cardTitleTag.appendChild(cardTitleContent);
@@ -76,27 +80,72 @@ class productCards
                                 cardDescriptionTag.classList.add("card-text");
                                 cardBody.appendChild(cardDescriptionTag);
                                 cardDescriptionTag.appendChild(cardDescriptionContent);
+
+                                //création choix de personnalisation
+                                //label
+                                const cardOptionLabel = document.createElement("label");
+                                cardBody.appendChild(cardOptionLabel);
+                                cardOptionLabel.classList.add("d-block", "mb-3");
+                                const cardOptionLabelContent = document.createTextNode(optionName + " options: ");
+                                cardOptionLabel.appendChild(cardOptionLabelContent);
+
+                                //tag liste d'options
+                                const cardOptionListTag = document.createElement("select");
+                                cardBody.appendChild(cardOptionListTag);
+
+                                //création des listes de sélection d'options avec boucle forEach
+                                OptionListCreation(optionChoices)                              
+                                function OptionListCreation(optionChoices)
+                                {
+                                    optionChoices.forEach(item =>
+                                        {
+                                            const listElement = document.createElement("option");
+                                            cardOptionListTag.appendChild(listElement);
+                                            listElement.value = item;
+                                            const listElementContent = document.createTextNode(item);
+                                            listElement.appendChild(listElementContent);
+                                        })
+                                }
+                               
                         })}}
 
 
 
-
+// Pilotage de l'affichage des éléments de la page.
     function displayProduct(urlToFetch) 
         {
             console.log("display product lancé: ", urlToFetch);
             eraseProductsContainer()
+            titleSelection(urlToFetch)
             fetch(urlToFetch) 
             .then(res => res.json()) // on parse la réponse de la requête en json
             .then(data => {
                 
                 data.forEach(item => {
-                    console.log(item._id)
                     let card = new productCards(urlToFetch,item)
                 })
             
                         
                     
         })} 
+
+//Selection du titre de la page
+    function titleSelection(selection)
+        {
+            
+            if (selection == "http://localhost:3000/api/teddies")
+                {   console.log("titre = teddies");
+                    titreProduit.innerHTML = "Nos Ours en peluche!"; 
+                }
+            else if (selection == "http://localhost:3000/api/cameras")
+            {   console.log("titre = cameras");
+            titreProduit.innerHTML = "Nos caméras!";
+            }
+            else if (selection == "http://localhost:3000/api/furniture")
+            {   console.log("titre = furniture");
+            titreProduit.innerHTML = "Nos meubles en chêne!";  
+            }
+        }
     
 selectDisplay() //lancer la selection et l'affichage au chargement de la page.
 
