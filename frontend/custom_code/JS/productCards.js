@@ -44,7 +44,8 @@ function displayProduct(urlToFetch)
         .then(data => {
             
             data.forEach(item => {
-                let card = new productCards(urlToFetch,item) //cette boucle construit des instances de la classe product Cards: les cartes produits.
+                let card = new productCards(urlToFetch,item,false) //cette boucle construit des instances de la classe product Cards: les cartes produits.
+                //console.log("card: ",item);
             })     
     })} 
 
@@ -70,12 +71,8 @@ function titleSelection(selection)
 
 class productCards
 {
-    constructor(cardType,product) //cardType fournit l'URL à aller chercher et product correspond à l'index de l'objet à aller cherher.
+    constructor(cardType,product,selected) //cardType fournit l'URL à aller chercher et product correspond à l'index de l'objet à aller cherher. Selected est un booléen, false quand affichage liste et true quand une carte est sélecionnéé
     {
-        fetch(cardType)// remplacer Url par variable cardType
-            .then(res => res.json()) // on parse la réponse de la requête en json
-            //.then(data => console.log(data)) //on affiche le résultat du parsing (array Json) dans la console
-            .then(data => 
                         {
                                 //création des variables fetch
                                 const pictureCardUrl = product.imageUrl;
@@ -91,7 +88,8 @@ class productCards
                                 productsContainer.appendChild(containerCard);
                                 containerCard.classList.add("anim", "card", "col-md-3", "bg-light", "shadow", "text-decoration-none", "gx-0", "m-3", "cursor-pointer");
                                 containerCard.id = idCard;
-                                containerCard.href = "#productsContainer";
+                                if(selected == false)
+                                    {containerCard.href = "#productsContainer";}
                                     
                                 //création image de la carte
                                 const pictureCardTag = document.createElement("img");
@@ -119,7 +117,11 @@ class productCards
                                 //création choix de personnalisation
                                 const customOptionsContainer = document.createElement("div");
                                 cardBody.appendChild(customOptionsContainer);
-                                customOptionsContainer.classList.add("d-none");
+                                    if (selected == false)
+                                    {customOptionsContainer.classList.add("d-none");}
+                                    
+                                
+                                
 
                                 //label
                                 const cardOptionLabel = document.createElement("label");
@@ -157,17 +159,30 @@ class productCards
                                 numberInputBasket.setAttribute("type","number");
                                 numberInputBasket.classList.add("w-25", "mx-3","numberInput"); 
 
-
+                                //fonctions d'affichage de la carte produit sélectionnée
                                 
-                                containerCard.addEventListener('click', selectId);
+                                if (selected ==false)
+                                    {
+                                        containerCard.addEventListener('click', selectId);
+                                        function selectId()
+                                        {
+                                            displaySelectedProduct(product); // Créer une fonction qui efface le contenu du container et affiche une nouvelle carte
+                                        }
 
-                                function selectId()
-                                {
-                                    displaySelectedProduct(idCard); // Créer une fonction qui efface le contenu du container et affiche une nouvelle carte
-                                }
-
+                                        function displaySelectedProduct(product)
+                                        {
+                                            eraseProductsContainer();
+                                            new productCards(cardType,product,true);                        
+                                        }
+                                    }
                                 
-                                })}}
+                                if (selected ==true)
+                                    {
+                                        containerCard.addEventListener('click', selectDisplay);
+                                    }
+                                
+                                }}                        
+}
 
 
 
@@ -197,12 +212,4 @@ console.log ( testObjectIsBack.vegetable);
 //quand on valide le panier avec l'un des deux boutons les variables sont assignées à un objet, qui est transmis à la page panier avec localstorage.
 
 
-function displaySelectedProduct(idCard)
-{
-    eraseProductsContainer();
-    productsContainer.innerHTML = idCard;
-    fetch('http://localhost:3000/api/cameras')
-        .then( res => res.json())
-        .then( data => console.log(data))
-                                    
-}                           
+                         
