@@ -228,7 +228,7 @@ function addBufferToBasket(buffer)
         {
             console.log("basket:", basket);
             console.log("buffer:", buffer);
-            basket = Object.assign(basket, buffer); //à améliorer...
+            basket = Object.assign(basket, buffer); //à améliorer... Voir les opération sur les array pour comprendre comment ajouter 2 lignes avec le même Id... Ou essaye de créer des objets avec Object.create. Ca devrait être plsu facile
             console.log("new basket:", basket);
             localStorage.setItem ("basketStorage", JSON.stringify(basket));
         }
@@ -240,14 +240,38 @@ selectDisplay() //lancer la selection et l'affichage au chargement de la page.
 
 
 
-//test localStorage
-let obj1 = {"fruit": "banana"};
-let obj2 = {"vegetable": "Cucumber"};
+//test localStorage On peut transformer un objet en array et inversement
+/*
 
-let testObject = Object.assign(obj1, obj2);
+    Use Object.entries(obj) to get an array of key/value pairs from obj.
+    Use array methods on that array, e.g. map, to transform these key/value pairs.
+    Use Object.fromEntries(array) on the resulting array to turn it back into an object.
+    https://javascript.info/keys-values-entries
 
+    On arrive comme ça à remplacer le nombre lié à un id et à utiliser l'id comme key des objets.
+*/
+let id1= "001";
+let id2= "002";
+let id3= "002";
 
-console.log (testObject.fruit);
+let arr1 = [[id1, 30]];
+console.log("arr1 :", arr1);
+let arr2 = [[id2, 45 ]];
+console.log("arr2 :", arr2);
+let arr3 = [[id3, 1000 ]];
+console.log("arr2 :", arr2);
+
+let obj1 = Object.fromEntries(arr1);
+console.log("obj1 :", obj1);
+let obj2 = Object.fromEntries(arr2);
+console.log("obj2 :", obj2);
+let obj3 = Object.fromEntries(arr3);
+console.log("obj3 :", obj3);
+
+let testObject = Object.assign(obj1, obj2, obj3);
+
+console.log ("return object",testObject)
+console.log ("return array",Object.entries(testObject));
 
 localStorage.setItem ("testObjectStr", JSON.stringify(testObject));
 
