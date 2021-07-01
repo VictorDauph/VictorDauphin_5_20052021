@@ -71,9 +71,15 @@ function titleSelection(selection)
 
 class productCards
 {
+    toggleButtons() //permet de faire apparaître et disparaître les boutons de commande
+    {
+        const buttons = document.getElementById("buttons")
+        buttons.classList.toggle("d-none");
+    }
+    
     constructor(cardType,product,selected) //cardType fournit l'URL à aller chercher et product correspond à l'index de l'objet à aller cherher. Selected est un booléen, false quand affichage liste et true quand une carte est sélecionnéé
     {
-                        {
+                    {
                                 //création des variables fetch
                                 const pictureCardUrl = product.imageUrl;
                                 const cardTitleContent = document.createTextNode(product.name);
@@ -157,7 +163,8 @@ class productCards
                                 customOptionsContainer.appendChild(numberInputBasket);
                                 numberInputLabel.classList.add("mx-3", "mb-3");
                                 numberInputBasket.setAttribute("type","number");
-                                numberInputBasket.classList.add("w-25", "mx-3","numberInput"); 
+                                numberInputBasket.setAttribute("value","1");
+                                numberInputBasket.classList.add("w-25", "mx-3"); 
 
                                 //fonctions d'affichage de la carte produit sélectionnée
                                 
@@ -175,22 +182,62 @@ class productCards
                                             new productCards(cardType,product,true);                        
                                         }
                                     }
-                                
-                                if (selected ==true)
+                                const validate = document.getElementById("validate");
+                                if (selected ==true) //apparition des boutons et surveillance de l'input de commande
                                     {
-                                        containerCard.addEventListener('click', selectDisplay);
+                                        numberInputBasket.addEventListener('change', readQuantity);
+                                        this.toggleButtons()
+                                        validate.addEventListener("click", putQuantityinBuffer);
                                     }
-                                
-                                }}                        
+
+                                function readQuantity()
+                                {
+                                    let quantity = numberInputBasket.value;
+                                }
+
+                                function putQuantityinBuffer()
+                                {
+                                    let quantity = numberInputBasket.value;
+                                    let bufferInCard = [idCard,quantity];
+                                    addBufferToBasket(bufferInCard);
+                                }
+                    }
+    }                        
 }
 
 
 
+function addBufferToBasket(buffer)
+    {
+        let basketJSON = localStorage.getItem("basketStorage");
+            console.log(basketJSON);
+            if (basketJSON === null)
+            {
+                let basket = ["rien", "rien"];
+                add(basket);
+            }
+            
+            else
+            {
+            let basket = JSON.parse(basketJSON);
+            console.log("parsing basketJSON");
+            add(basket);
+            }
+        
+        function add(basket)
+        {
+            console.log("basket:", basket);
+            console.log("buffer:", buffer);
+            basket = Object.assign(basket, buffer); //à améliorer...
+            console.log("new basket:", basket);
+            localStorage.setItem ("basketStorage", JSON.stringify(basket));
+        }
+    }
 
 
 
-    
 selectDisplay() //lancer la selection et l'affichage au chargement de la page.
+
 
 
 //test localStorage
@@ -205,7 +252,7 @@ console.log (testObject.fruit);
 localStorage.setItem ("testObjectStr", JSON.stringify(testObject));
 
 const testObjectIsBack = JSON.parse(localStorage.getItem("testObjectStr"));
-console.log ( testObjectIsBack.vegetable);
+console.log ( testObjectIsBack);
 
 // Utiliser la technique précédente pour transmettre un objet qui contient le contenu du panier à la page panier.
 // Comment l'utilisateur ajoute t-il un élément au panier? il entre un nombre dans une case, les cases mettent à jour automatiquement des variables... On utilise les ID pour relier un produit au nombre d'éléments dans le panier...
