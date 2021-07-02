@@ -15,7 +15,7 @@ const titreProduit =  document.getElementById("titreProduit");
 
 // génération de cartes produits page principale
 
-//eraseProductsContainer(); //effacer le conteneur au chargement de la page
+//eraseProductsContainer(); //effacer le conteneur
 function eraseProductsContainer() //effacer le conteneur
  {
     productsContainer.innerHTML = " ";
@@ -265,20 +265,3 @@ function checkBasketValues(basket) //fonction qui vérifie qui supprime les vale
 
 
 selectDisplay() //lancer la selection et l'affichage au chargement de la page.
-
-
-
-//test localStorage On peut transformer un objet en array et inversement
-/*
-
-    Use Object.entries(obj) to get an array of key/value pairs from obj.
-    Use array methods on that array, e.g. map, to transform these key/value pairs.
-    Use Object.fromEntries(array) on the resulting array to turn it back into an object.
-    https://javascript.info/keys-values-entries
-
-    On arrive comme ça à remplacer le nombre lié à un id et à utiliser l'id comme key des objets.
-*/
-
-//const testObjectIsBack = JSON.parse(localStorage.getItem("testObjectStr"));
-
-                         
