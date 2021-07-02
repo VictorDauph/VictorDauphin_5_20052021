@@ -69,6 +69,18 @@ a:focus
   }
 }
 
+
+
+// dimensionnement images
+img
+{
+    max-height: 300px;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+//animations
 //animations d'apparition: ajouter classe anim aux éléments à faire apparaître
 $dureeApparition:1000ms;
 .anim
@@ -80,22 +92,44 @@ $dureeApparition:1000ms;
 
 //effet hover
 $dureeHover:300ms;
-a
+a, button
 {
     scale: (1);
     transition: transform $dureeHover;
 }
-a:hover            
+a:hover, button:hover           
 {
     transform: scale(1.1);
     
 }
 
-// dimensionnement images
-img
+//animation validation commande
+@keyframes validation
 {
-    max-height: 300px;
-    object-fit: cover;
-    object-position: center;
-}
+    0%
+    {
+      background-color: $primary;
+      border-color: $success;
+    } 
+    20%
+    {
+        background-color: $success;
+        border-color: $primary;
+    }
+    80%
+    {
+        background-color: $success;
+        border-color: $success;   
+    }
+    100%
+    {
+        background-color: $success;
+        border-color: $primary;
+    }
+  }
 
+.validation-anim
+{
+    animation: validation 1000ms;
+    animation-fill-mode: forwards;
+}

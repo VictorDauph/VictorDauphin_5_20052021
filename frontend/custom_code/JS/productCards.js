@@ -92,8 +92,7 @@ class productCards
                                 //création du cadre de la carte
                                 const containerCard = document.createElement("a");
                                 productsContainer.appendChild(containerCard);
-                                containerCard.classList.add("anim", "card", "col-md-3", "bg-light", "shadow", "text-decoration-none", "gx-0", "m-3", "cursor-pointer");
-                                containerCard.id = idCard;
+                                containerCard.classList.add("anim", "card", "col-lg-3", "bg-light", "shadow", "text-decoration-none", "gx-0", "m-3", "cursor-pointer");
                                 if(selected == false)
                                     {containerCard.href = "#productsContainer";}
                                     
@@ -166,6 +165,13 @@ class productCards
                                 numberInputBasket.setAttribute("value","1");
                                 numberInputBasket.classList.add("w-25", "mx-3"); 
 
+                                //Création bouton valider
+                                const validate = document.createElement("button");
+                                const validateContent = document.createTextNode("Valider");
+                                validate.appendChild(validateContent);
+                                customOptionsContainer.appendChild(validate);
+                                validate.classList.add("btn-primary", "col-12", "text-light", "btn-lg");
+
                                 //fonctions d'affichage de la carte produit sélectionnée
                                 
                                 if (selected ==false)
@@ -182,23 +188,22 @@ class productCards
                                             new productCards(cardType,product,true);                        
                                         }
                                     }
-                                const validate = document.getElementById("validate");
-                                if (selected ==true) //apparition des boutons et surveillance de l'input de commande
+                                
+                                if (selected ==true) //surveillance bouton de validation
                                     {
-                                        numberInputBasket.addEventListener('change', readQuantity);
-                                        this.toggleButtons()
                                         validate.addEventListener("click", putQuantityinBuffer);
+                                        validate.addEventListener("click", animatebutton);
                                     }
-
-                                function readQuantity()
+                                function animatebutton()
                                 {
-                                    let quantity = numberInputBasket.value;
+                                    validate.classList.add("validation-anim");
+                                    setTimeout(() => { validate.classList.remove("validation-anim")}, 1000);
                                 }
 
                                 function putQuantityinBuffer()
                                 {
                                     let quantity = numberInputBasket.value;
-                                    let bufferInCard = [idCard,quantity];
+                                    let bufferInCard = [[idCard,quantity]];
                                     addBufferToBasket(bufferInCard);
                                 }
                     }
@@ -213,12 +218,13 @@ function addBufferToBasket(buffer)
             console.log(basketJSON);
             if (basketJSON === null)
             {
-                let basket = ["rien", "rien"];
+                let basket = [["rien", 0]];
+                console.log("creating empty basket");
                 add(basket);
             }
             
             else
-            {
+            { 
             let basket = JSON.parse(basketJSON);
             console.log("parsing basketJSON");
             add(basket);
@@ -226,14 +232,35 @@ function addBufferToBasket(buffer)
         
         function add(basket)
         {
-            console.log("basket:", basket);
-            console.log("buffer:", buffer);
-            basket = Object.assign(basket, buffer); //à améliorer... Voir les opération sur les array pour comprendre comment ajouter 2 lignes avec le même Id... Ou essaye de créer des objets avec Object.create. Ca devrait être plsu facile
+            console.log("basket:", basket); 
+            console.log("buffer:", buffer); 
+            //basket et buffer sont des array, on les transforme en objet pour pouvoir les manipuler avec Object.assign
+            let basketObject = Object.fromEntries(basket);
+            let bufferObject = Object.fromEntries(buffer);
+            basketObject = Object.assign(basketObject,bufferObject);
+            console.log("basketObject:", basketObject);
+            basket = Object.entries(basketObject); //on reconvertit basket en array pour manipulations utlérieures
             console.log("new basket:", basket);
-            localStorage.setItem ("basketStorage", JSON.stringify(basket));
+            checkBasketValues(basket);
         }
     }
 
+function checkBasketValues(basket) //fonction qui vérifie qui supprime les valeurs négatives dans le panier et l'envoie dans le local storage
+{
+    console.log("array basket to check:",basket);
+    basket.forEach(element => 
+    {
+        if (element[1] < 1) 
+        {
+            let index = basket.indexOf(element)
+         console.log("found it! index:", index , "element:", element);
+         let suppressed = basket.splice(index,1);
+         console.log("suppressed!", suppressed);
+        }
+    });
+    console.log("array basket checked:",basket);
+    localStorage.setItem ("basketStorage", JSON.stringify(basket));
+}
 
 
 selectDisplay() //lancer la selection et l'affichage au chargement de la page.
@@ -250,37 +277,7 @@ selectDisplay() //lancer la selection et l'affichage au chargement de la page.
 
     On arrive comme ça à remplacer le nombre lié à un id et à utiliser l'id comme key des objets.
 */
-let id1= "001";
-let id2= "002";
-let id3= "002";
 
-let arr1 = [[id1, 30]];
-console.log("arr1 :", arr1);
-let arr2 = [[id2, 45 ]];
-console.log("arr2 :", arr2);
-let arr3 = [[id3, 1000 ]];
-console.log("arr2 :", arr2);
-
-let obj1 = Object.fromEntries(arr1);
-console.log("obj1 :", obj1);
-let obj2 = Object.fromEntries(arr2);
-console.log("obj2 :", obj2);
-let obj3 = Object.fromEntries(arr3);
-console.log("obj3 :", obj3);
-
-let testObject = Object.assign(obj1, obj2, obj3);
-
-console.log ("return object",testObject)
-console.log ("return array",Object.entries(testObject));
-
-localStorage.setItem ("testObjectStr", JSON.stringify(testObject));
-
-const testObjectIsBack = JSON.parse(localStorage.getItem("testObjectStr"));
-console.log ( testObjectIsBack);
-
-// Utiliser la technique précédente pour transmettre un objet qui contient le contenu du panier à la page panier.
-// Comment l'utilisateur ajoute t-il un élément au panier? il entre un nombre dans une case, les cases mettent à jour automatiquement des variables... On utilise les ID pour relier un produit au nombre d'éléments dans le panier...
-//quand on valide le panier avec l'un des deux boutons les variables sont assignées à un objet, qui est transmis à la page panier avec localstorage.
-
+//const testObjectIsBack = JSON.parse(localStorage.getItem("testObjectStr"));
 
                          
