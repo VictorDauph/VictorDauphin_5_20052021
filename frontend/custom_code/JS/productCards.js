@@ -193,6 +193,7 @@ class productCards
                                     {
                                         validate.addEventListener("click", putQuantityinBuffer);
                                         validate.addEventListener("click", animatebutton);
+                                        this.toggleButtons();
                                     }
                                 function animatebutton()
                                 {
