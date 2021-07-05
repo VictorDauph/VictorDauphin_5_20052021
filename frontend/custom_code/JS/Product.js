@@ -87,7 +87,6 @@ class productCards
                                 const optionName = Object.keys(product)[0];
                                 const optionChoices = Object.values(product)[0];
                                 const idCard = product._id;
-                                
 
                                 //création du cadre de la carte
                                 const containerCard = document.createElement("a");
@@ -123,11 +122,8 @@ class productCards
                                 const customOptionsContainer = document.createElement("div");
                                 cardBody.appendChild(customOptionsContainer);
                                     if (selected == false)
-                                    {customOptionsContainer.classList.add("d-none");}
-                                    
+                                    {customOptionsContainer.classList.add("d-none");}                                                                    
                                 
-                                
-
                                 //label
                                 const cardOptionLabel = document.createElement("label");
                                 customOptionsContainer.appendChild(cardOptionLabel);
@@ -205,6 +201,7 @@ class productCards
                                 {
                                     let quantity = numberInputBasket.value;
                                     let bufferInCard = [[idCard,quantity]];
+                                    console.log("bufferInCard", bufferInCard);
                                     addBufferToBasket(bufferInCard);
                                 }
                     }
@@ -219,7 +216,7 @@ function addBufferToBasket(buffer)
             console.log(basketJSON);
             if (basketJSON === null)
             {
-                let basket = [["rien", 0]];
+                let basket = [["rien", 0, "www.rien.com"]];
                 console.log("creating empty basket");
                 add(basket);
             }

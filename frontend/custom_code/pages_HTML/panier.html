@@ -32,7 +32,7 @@
                         <h1>Panier</h1>
                         <p>Votre panier contient:</p>
                     </article>
-                    <div id="basketContainer" class="mt-5 bg-light  shadow rounded">
+                    <div class="mt-5 bg-light  shadow rounded">
                         <table class="table border-primary ">
                             <thead>
                             <tr>
@@ -41,7 +41,7 @@
                                 <th scope="col">Prix Unitaire</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="basketContainer">
                             <tr>
                                 <th scope="row">2</th>
                                 <td>erreur</td>
@@ -57,11 +57,13 @@
                                 <td></td>
                                 <td></td>
                             </tr>
-                            <tr>
-                                <th scope="row"></th>
-                                <td>Prix Total</td>
-                                <td>315€</td>
-                            </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>Prix Total</td>
+                                    <td id="total"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
