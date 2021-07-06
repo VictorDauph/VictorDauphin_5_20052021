@@ -209,7 +209,8 @@ class productCards
 }
 
 
-
+// fonctions de modification du buffer et du panier en local storage
+//cette fonction sert à convertir basketstorage en JSON et appelle add.
 function addBufferToBasket(buffer)
     {
         let basketJSON = localStorage.getItem("basketStorage");
@@ -227,7 +228,8 @@ function addBufferToBasket(buffer)
             console.log("parsing basketJSON");
             add(basket);
             }
-        
+
+//Cette fonction sert à transformer les arrays basket et buffer en object pour pouvoir appliquer la methode Object.assign, puis les reconvertie en array appelle la fonction de vérification.
         function add(basket)
         {
             console.log("basket:", basket); 
@@ -243,7 +245,8 @@ function addBufferToBasket(buffer)
         }
     }
 
-function checkBasketValues(basket) //fonction qui vérifie qui supprime les valeurs négatives dans le panier et l'envoie dans le local storage
+//fonction qui vérifie qui supprime les valeurs négatives et nulles  dans le panier et l'envoie dans le local storage
+function checkBasketValues(basket) 
 {
     console.log("array basket to check:",basket);
     basket.forEach(element => 
