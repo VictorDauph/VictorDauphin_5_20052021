@@ -193,6 +193,7 @@ function sum (total, num)
 function loadPage()
 {
    initBasketContainer()
+   localStorage.setItem("basketStorageTemp", localStorage.getItem("basketStorage"))
   fetchProductsdata(URLs);
 }
 
@@ -202,6 +203,7 @@ function refreshPage()
 {
   let basketStorageTemp = localStorage.getItem("basketStorageTemp");
   localStorage.setItem("basketStorage", basketStorageTemp);
+  totalArray =[];
    loadPage();
 }
 
