@@ -8,8 +8,8 @@ console.log("basket",basket);
 //emplacement basketContainer: table de rendu
 const basketContainer = document.getElementById("basketContainer");
 
-//initialisation prix Total
-let total= 0;
+//initialisation prix Total, l'array sert à stocker les valeurs intérmédiaire pour calcul avec reducer
+let totalArray= [];
 
 
  function fetchProductsdata(URLs)
@@ -50,17 +50,6 @@ let total= 0;
  
 class BasketLine
 {
-   updateTotal(quantity,price) //ça marche pas et j'ai mal à la tête....
-   {
-      total = total + (quantity*price);
-      console.log("price", price)
-      console.log("total", typeof total);
-      const totalDisplay = document.getElementById("total");
-      const formatedTotal = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(total/100);
-      const totalDisplayContent = document.createTextNode(formatedTotal);
-      totalDisplay.appendChild(totalDisplayContent);
-   }
-
    constructor (name,price,quantity)
    {
       
@@ -79,9 +68,36 @@ class BasketLine
       row.appendChild(col3);
       const col3Content = document.createTextNode(formatedPrice);
       col3.appendChild(col3Content);
-      this.updateTotal(quantity,price);
+      updateTotal(quantity,price);
+
+      
+      //input de modification
+      const col4 = document.createElement("td");
+      row.appendChild(col4);
+      col4.classList.add("w-25");
+      const numberInputModif = document.createElement("input");
+      col4.appendChild(numberInputModif);
+      numberInputModif.setAttribute("type","number");
+      numberInputModif.setAttribute("value",quantity);
+      numberInputModif.classList.add("w-75");  
    }
 }
+
+//Création bouton valider
+const validateContainer = document.getElementById("validate");
+const validate = document.createElement("button");
+const validateContent = document.createTextNode("Valider");
+validate.appendChild(validateContent);
+validateContainer.appendChild(validate);
+validate.classList.add("btn-light", "col-12", "text-primary", "btn-sm");
+validate.addEventListener("click", animatebutton);
+
+function animatebutton()
+   {
+      validate.classList.add("validation-anim");
+      setTimeout(() => { validate.classList.remove("validation-anim")}, 1000);
+   }
+
 
 
  fetchProductsdata(URLs);
@@ -90,7 +106,23 @@ class BasketLine
  {
     basketContainer.innerHTML = " ";
     console.log("container initialized");
-    
-
  }
 
+function updateTotal(quantity,price) //ça marche pas et j'ai mal à la tête.... Il considère qu'il y'a deux totaux différents. La méthode de calcul n'est pas bonne. Faut faire un array et calculer à partir de lui?
+{
+   const productTotal = quantity*price;
+   console.log("price", price)
+   console.log("producttotal", typeof productTotal);
+   totalArray.push(productTotal),
+   console.log("totalarray:", totalArray);
+   let total = totalArray.reduce(sum,0);
+   const totalDisplay = document.getElementById("total");
+   const formatedTotal = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(total/100);
+   totalDisplay.innerHTML = `${formatedTotal}`;
+}
+
+//fonction de réduction pour additionner les totaux intermédiaires dans totalArray et en faire un nombre.
+function sum (total, num)
+{
+   return total + num;
+}
