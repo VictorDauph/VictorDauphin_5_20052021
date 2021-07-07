@@ -15,5 +15,6 @@ Construction de la partie front-end d'un site e-commerce dynamique. Maquettage e
 Compétences:
 
 - Pages dynamiques avec Javascript
-- gestion d'API avec JS
+- Gestion d'API avec JS
+- Gestion du local Storage
 - Framework SCSS: Bootstrap.
