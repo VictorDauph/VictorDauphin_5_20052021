@@ -86,6 +86,7 @@ class productCards
                                 const optionName = Object.keys(product)[0];
                                 const optionChoices = Object.values(product)[0];
                                 const idCard = product._id;
+                                const price = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price/100);
 
                                 //création du cadre de la carte
                                 const containerCard = document.createElement("a");
@@ -111,6 +112,12 @@ class productCards
                                 cardBody.appendChild(cardTitleTag);
                                 cardTitleTag.appendChild(cardTitleContent);
 
+                                //création prix carte
+                                const cardPriceLabel = document.createElement("p");
+                                cardBody.appendChild(cardPriceLabel);
+                                const cardpriceContent = document.createTextNode(price);
+                                cardPriceLabel.appendChild(cardpriceContent);
+
                                 //création description
                                 const cardDescriptionTag = document.createElement("p");
                                 cardDescriptionTag.classList.add("card-text");
@@ -121,18 +128,23 @@ class productCards
                                 const customOptionsContainer = document.createElement("div");
                                 cardBody.appendChild(customOptionsContainer);
                                     if (selected == false)
-                                    {customOptionsContainer.classList.add("d-none");}                                                                    
+                                    {customOptionsContainer.classList.add("d-none");}
+                                    
+                                //options container
+                                const optionsSelectContainer = document.createElement("div");
+                                customOptionsContainer.appendChild(optionsSelectContainer);
                                 
                                 //label
                                 const cardOptionLabel = document.createElement("label");
-                                customOptionsContainer.appendChild(cardOptionLabel);
-                                cardOptionLabel.classList.add("d-block", "mb-3");
+                                optionsSelectContainer.appendChild(cardOptionLabel);
+                                cardOptionLabel.classList.add("mb-3");
                                 const cardOptionLabelContent = document.createTextNode(optionName + " options: ");
                                 cardOptionLabel.appendChild(cardOptionLabelContent);
 
                                 //tag liste d'options
                                 const cardOptionListTag = document.createElement("select");
-                                customOptionsContainer.appendChild(cardOptionListTag);
+                                cardOptionListTag.classList.add("mb-3","mx-2");
+                                optionsSelectContainer.appendChild(cardOptionListTag);
 
                                 //création des listes de sélection d'options avec boucle forEach
                                 OptionListCreation(optionChoices)                              
@@ -147,18 +159,21 @@ class productCards
                                             listElement.appendChild(listElementContent);
                                         })
                                 }
-                            
+                                //Order container
+                                const orderContainer = document.createElement("div");
+                                customOptionsContainer.appendChild(orderContainer);
+
                                 //création input nombre à ajouter au panier
                                 const numberInputLabel = document.createElement("label");
-                                customOptionsContainer.appendChild(numberInputLabel);
+                                orderContainer.appendChild(numberInputLabel);
                                 const numberInputLabelContent = document.createTextNode("Commander:");
                                 numberInputLabel.appendChild(numberInputLabelContent);
                                 const numberInputBasket = document.createElement("input");
-                                customOptionsContainer.appendChild(numberInputBasket);
-                                numberInputLabel.classList.add("mx-3", "mb-3");
+                                orderContainer.appendChild(numberInputBasket);
+                                numberInputLabel.classList.add( "mb-3");
                                 numberInputBasket.setAttribute("type","number");
                                 numberInputBasket.setAttribute("value","1");
-                                numberInputBasket.classList.add("w-25", "mx-3"); 
+                                numberInputBasket.classList.add("w-25","mx-3"); 
 
                                 //Création bouton valider
                                 const validate = document.createElement("button");
