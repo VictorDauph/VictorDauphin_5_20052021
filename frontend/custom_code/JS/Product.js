@@ -52,7 +52,6 @@ function displayProduct(urlToFetch)
 //Selection du titre de la page
 function titleSelection(selection)
 {
-    
     if (selection == "http://localhost:3000/api/teddies")
         {   console.log("titre = teddies");
             titreProduit.innerHTML = "Nos Ours en peluche!"; 
