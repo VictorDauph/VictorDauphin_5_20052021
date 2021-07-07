@@ -1,8 +1,3 @@
-//stockage des URLS à fetch dans un array
-const URLs = ["http://localhost:3000/api/teddies","http://localhost:3000/api/cameras","http://localhost:3000/api/furniture"];
-
-
-
 //emplacement basketContainer: table de rendu
 const basketContainer = document.getElementById("basketContainer");
 
@@ -21,7 +16,7 @@ validate.addEventListener("click", animatebutton);
 //classe qui permet de créer une ligne du panier à partir des données nécessaires
 class BasketLine
 {
-   constructor (name,price,quantity,ID)
+   constructor (name,price,quantity,ID,cardType)
    {
       
       let formatedPrice= (new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(price/100));
@@ -56,91 +51,102 @@ class BasketLine
       //fonctions de modification
       numberInputModif.addEventListener("change", putQuantityinBuffer);
       function putQuantityinBuffer()
-         {
-            let quantity = numberInputModif.value;
-            let bufferInCard = [[ID,quantity]];
-            console.log("bufferInCard", bufferInCard);
-            addBufferToBasket(bufferInCard)
-         }
+      {
+         let quantity = numberInputModif.value;
+         let bufferInCard = [ID,quantity,cardType];
+         console.log("bufferInCard", bufferInCard);
+         callBasket(bufferInCard);
+      }
    }
 }
 
 //Fonction qui va chercher les données necéssaires pour créer les lignes du tableau et calculer le total
- function fetchProductsdata(URLs)
- {
+ function fetchProductsdata()
+{
    // Chargement basketStorage
    const basket = JSON.parse(localStorage.getItem("basketStorage"));
-   console.log("basket",basket);
-   URLs.forEach(URL =>
-      {
-         //console.log("fetched",URL)
-         fetch(URL)
-         .then(res => res.json())
-         .then(fetchedData =>
-            {
-               basket.forEach( basketElement =>
-               {
-                  fetchedData.forEach( fetchedElement =>{
-                  // création des variables à partir des données fetchée et du panier qui vient du local storage
-                  const fetchedProductId = fetchedElement._id
-                  const fetchedProductName = fetchedElement.name
-                  const fetchedProductPrice = parseInt(fetchedElement.price,10);
-                  const basketElementId = basketElement[0];
-                  const basketElementQuantity = parseInt(basketElement[1],10);
-                  const recherche = basketElementId.includes(fetchedProductId);
-                  //console.log(fetchedData[0]._id, basketElement[0], recherche );
-                  if (recherche == true)
-                     {
-                        //console.log(recherche);
-                        //console.log("element", basketElement);
-                        //console.log("name", fetchedProductName);
-                        //console.log("price", fetchedProductPrice);
-                        new BasketLine(fetchedProductName,fetchedProductPrice,basketElementQuantity,fetchedProductId); //création d'une ligne
-                     } 
-                  })})
-            }
-      )
-      });   
+   console.log("basket",basket);    
+   basket.forEach( basketElement =>
+   {
+      const cardType = basketElement[2]
+      console.log("fetched",cardType)
+      fetch(cardType)
+      .then(res => res.json())
+      .then(fetchedData =>{
+      fetchedData.forEach( fetchedElement =>{
+      // création des variables à partir des données fetchée et du panier qui vient du local storage
+      const fetchedProductId = fetchedElement._id
+      const fetchedProductName = fetchedElement.name
+      const fetchedProductPrice = parseInt(fetchedElement.price,10);
+      const basketElementId = basketElement[0];
+      const basketElementQuantity = parseInt(basketElement[1],10);
+      const recherche = basketElementId.includes(fetchedProductId);
+      //console.log(fetchedData[0]._id, basketElement[0], recherche );
+      if (recherche == true)
+         {
+            //console.log(recherche);
+            //console.log("element", basketElement);
+            //console.log("name", fetchedProductName);
+            //console.log("price", fetchedProductPrice);
+            new BasketLine(fetchedProductName,fetchedProductPrice,basketElementQuantity,fetchedProductId,cardType); //création d'une ligne
+         } 
+      })})
+            
+   })
+         
 }
  
 // fonctions de modification du buffer et du panier en local storage
 //cette fonction sert à convertir basketstorage en JSON et appelle add.
-function addBufferToBasket(buffer)
+function callBasket(buffer)
     {
         let basketJSON = localStorage.getItem("basketStorageTemp");
             console.log(basketJSON);
             if (basketJSON === null)
             {
-                let basket = [["rien", 0, "www.rien.com"]];
+                let basket = [["rien", 0, "NoType"]];
                 console.log("creating empty basket");
-                add(basket);
+                checkBufferId(basket,buffer)
             }
             
             else
             { 
             let basket = JSON.parse(basketJSON);
             console.log("parsing basketJSON");
-            add(basket);
+            // checkBasketQuantity(basket);
+            checkBufferId(basket,buffer)
             }
-
-//Cette fonction sert à transformer les arrays basket et buffer en object pour pouvoir appliquer la methode Object.assign, puis les reconvertie en array appelle la fonction de vérification.
-        function add(basket)
-        {
-            console.log("basket:", basket); 
-            console.log("buffer:", buffer); 
-            //basket et buffer sont des array, on les transforme en objet pour pouvoir les manipuler avec Object.assign
-            let basketObject = Object.fromEntries(basket);
-            let bufferObject = Object.fromEntries(buffer);
-            basketObject = Object.assign(basketObject,bufferObject);
-            console.log("basketObject:", basketObject);
-            basket = Object.entries(basketObject); //on reconvertit basket en array pour manipulations utlérieures
-            console.log("new basket:", basket);
-            checkBasketValues(basket);
-        }
     }
 
-//fonction qui vérifie qui supprime les valeurs négatives et nulles dans le panier.
-function checkBasketValues(basket) 
+//Cette Fonction vérifie les id et supprime les doublons
+function checkBufferId(basket,buffer)
+    {
+       
+       console.log("buffer to check:",buffer);
+        basket.forEach( basketLine => {
+            let bufferId = buffer[0]
+            let basketLineId =basketLine[0]
+            console.log("comparing ID", bufferId, basketLineId )
+            if (bufferId === basketLineId)
+                {
+                    let index = basket.indexOf(basketLine);
+                    let suppressed = basket.splice(index,1);
+                    console.log("suppressed duplicate", suppressed);
+                }
+        })
+        pushbuffertoBasket(basket,buffer)
+    } 
+
+    //Cette fonction ajoute le buffer au basket 
+function pushbuffertoBasket(basket,buffer)
+    {
+        let push = basket.push(buffer);
+        console.log("basket pushed",basket);
+        checkBasketQuantity (basket);
+    }
+
+//fonction qui vérifie qui supprime les valeurs négatives et nulles  dans le panier et l'envoie dans basketStorageTemp
+function checkBasketQuantity(basket) 
 {
     console.log("array basket to check:",basket);
     basket.forEach(element => 
@@ -148,14 +154,14 @@ function checkBasketValues(basket)
         if (element[1] < 1) 
         {
             let index = basket.indexOf(element)
-         console.log("found it! index:", index , "element:", element);
          let suppressed = basket.splice(index,1);
-         console.log("suppressed!", suppressed);
+         console.log("suppressed <1", suppressed);
         }
     });
     console.log("array basket checked:",basket);
     localStorage.setItem ("basketStorageTemp", JSON.stringify(basket));
 }
+
 
 //animation du bouton valider au click
 function animatebutton()
@@ -194,7 +200,7 @@ function loadPage()
 {
    initBasketContainer()
    localStorage.setItem("basketStorageTemp", localStorage.getItem("basketStorage"))
-  fetchProductsdata(URLs);
+  fetchProductsdata();
 }
 
 validate.addEventListener("click",refreshPage);
