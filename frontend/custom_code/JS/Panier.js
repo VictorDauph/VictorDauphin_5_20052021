@@ -1,3 +1,4 @@
+//scripts tableau panier
 //emplacement basketContainer: table de rendu
 const basketContainer = document.getElementById("basketContainer");
 
@@ -215,3 +216,55 @@ function refreshPage()
 
 loadPage();
 
+
+//scripts formulaire et envoie données
+// Récupération constantes formulaire
+const passOrder = document.getElementById("passOrder");
+passOrder.addEventListener("click",post);
+
+let contact ={
+   firstName: "string", 
+   lastName: "string", 
+   address: "string",
+   city: "string",
+   email: "string@string.com"
+   }
+   let products = ["5be1ed3f1c9d44000030b061","5be9c4c71c9d440000a730e9"]; //erreur 500 si le serveur ne reconnaît pas l'id.
+   
+   let order =
+   {
+      contact : contact,
+      products: products
+   }
+   
+   
+let requestBody= JSON.stringify(order);
+let requestHeaders = {"Content-Type":"application/json"};
+
+const init =
+{
+   method: "POST",
+   body: requestBody,
+   headers : requestHeaders,
+};
+
+
+function post()
+{
+   localStorage.setItem("c'est good?","bof")
+   console.log(requestBody)
+   fetch("http://localhost:3000/api/cameras/order",init)
+   .then(res => res.json())
+      .then(fetchedData =>
+         {  console.log("post fetched",fetchedData.products)
+            fetchedData.products.forEach(element =>
+               console.log("post fetched name",element.name )
+            )
+               localStorage.setItem("c'est good?","oui")
+               document.location.href="nouvellepage.html" //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.
+         })
+      .catch(error => {console.log("POST error", error)
+                     localStorage.setItem("c'est good?","non")}
+      )
+            //possible d'envoyer tous les id dans le même array puis de récupérer les données avec une boucle forEach"
+}
