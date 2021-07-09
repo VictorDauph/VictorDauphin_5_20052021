@@ -199,11 +199,11 @@ function sum (total, num)
 //fonction d'initialisation de la page
 function loadPage()
 {
-   let productArraysStock = {teddies:[], cameras:[],furniture:[]};
+   let productArraysinObject = {teddies:[], cameras:[],furniture:[]};
    initBasketContainer()
    let basketStorageTempJSON = localStorage.getItem("basketStorage")
    let basketStorageTemp = JSON.parse(basketStorageTempJSON);
-   collectProductArray(basketStorageTemp,productArraysStock); //Cette fonction sert à construire les products Arrays à envoyer au serveur backend
+   collectProductArray(basketStorageTemp,productArraysinObject); //Cette fonction sert à construire les products Arrays à envoyer au serveur backend
    localStorage.setItem("basketStorageTemp", basketStorageTempJSON )
   fetchProductsdata();
 }
@@ -218,45 +218,49 @@ function refreshPage()
    loadPage();
 }
 
-loadPage();
+
+
 
 
 //scripts formulaire et envoie données
+// récupérations données produits
+// objet de stockage des id des produits triés par type
+let productArraysinObjectSorted = {};
 //Récupération données produits pour envoi au backend.
-function collectProductArray(basketStorageTemp,productArraysStock)
+function collectProductArray(basketStorageTemp,productArraysinObject)
 {
    basketStorageTemp.forEach( product => {
       const productID = product[0]
       const productType = product[2]
       console.log ("product array ID",productID)
       console.log ("product array Type",productType);
-      let productArrayStockSorted = sortingProducts(productID,productType,productArraysStock); //tri des id par types de produits.
-      console.log("product Array Stock Sorted", productArrayStockSorted);
+      productArraysinObjectSorted = sortingProducts(productID,productType,productArraysinObject); //tri des id par types de produits.
+      console.log("product Array Stock Sorted", productArraysinObjectSorted);
    })
    console.log ("product array",basketStorageTemp);
 }
 
-//sort the products in 3 arrays to send to the backend
-function sortingProducts(productID,productType,productArraysStock)
+//Trie les produits dans 3 arrays stockés dans l'objet productArraysinObject
+function sortingProducts(productID,productType,productArraysinObject)
 {
-   console.log ("product Array Stock", productArraysStock)
+   console.log ("product Array Stock", productArraysinObject)
    if (productType == "http://localhost:3000/api/teddies")
       {
-         productArraysStock.teddies.push(productID)
-         console.log ("teddiepush product Array Stock", productArraysStock)
+         productArraysinObject.teddies.push(productID)
+         console.log ("teddiepush product Array Stock", productArraysinObject)
       }
    else if (productType == "http://localhost:3000/api/cameras")
    {
-      productArraysStock.cameras.push(productID)
-      console.log ("camerapush product Array Stock", productArraysStock)
+      productArraysinObject.cameras.push(productID)
+      console.log ("camerapush product Array Stock", productArraysinObject)
    }
    else if (productType == "http://localhost:3000/api/furniture")
    {
-      productArraysStock.furniture.push(productID)
-      console.log ("furniturepush product Array Stock", productArraysStock)
+      productArraysinObject.furniture.push(productID)
+      console.log ("furniturepush product Array Stock", productArraysinObject)
    }
    else {console.log("unknown type")};
-   return productArraysStock
+   return productArraysinObject
 }
 
 // Récupération constantes formulaire
@@ -294,17 +298,43 @@ const init =
 
 function post()
 {
-   let formDatas = document.getElementsByClassName("form-control");
-   console.log("formdatas",formDatas[4].value);
+   collectFormDatas();
    localStorage.setItem("c'est good?","bof")
    console.log(requestBody)
    fetch("http://localhost:3000/api/cameras/order",init)
    .then(res => res.json())
       .then(fetchedData => {storageFetechedDatas(fetchedData)
-      document.location.href="confirmation.html"}) //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.)
+      //document.location.href="confirmation.html" //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.)
+         }) 
       .catch(error => {console.log("POST error", error)
                      localStorage.setItem("c'est good?","non")})
             //possible d'envoyer tous les id dans le même array puis de récupérer les données avec une boucle forEach"
+}
+
+function collectFormDatas()
+{
+      let formDatas = document.getElementsByClassName("form-control");
+      console.log("formdatas",formDatas);
+        let formInputs = Object.values(formDatas);
+         formInputs.forEach( input => {
+            console.log("formValue",input.id, input.value);
+            let Validation = checkValue(input)
+         })
+        
+}
+
+function checkValue(input)
+{
+   let inputValue= input.value //chaque inputValue représente la valeur rentrée dans un input du formulaire
+   let inputId = input.id
+    if (typeof(inputValue)==="string" && inputValue !== "") // il faut utiliser des regex pour voir si certains inputs contiennent des nombres (l'adresse et l'email peuvent en contenir mais pas les autres) et si l'email est bien un email.
+      {
+         console.log( inputId, "OK")
+      }
+   else
+   {
+      console.log( inputId, "not OK")
+   }
 }
 
 function storageFetechedDatas(fetchedData)
@@ -315,3 +345,7 @@ console.log("post fetched",fetchedData.products)
             localStorage.setItem("c'est good?","oui")
             
 }
+
+
+
+loadPage();
