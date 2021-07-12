@@ -270,7 +270,8 @@ const passOrder = document.getElementById("passOrder");
 passOrder.addEventListener("click",post);
 
 let contact ={
-   firstName: "string", 
+    firstName: "string",
+   value : "string", 
    lastName: "string", 
    address: "string",
    city: "string",
@@ -283,7 +284,7 @@ let contact ={
       contact : contact,
       products: products
    }
-   
+ 
    
 let requestBody= JSON.stringify(order);
 let requestHeaders = {"Content-Type":"application/json"};
@@ -325,16 +326,56 @@ function collectFormDatas()
 
 function checkValue(input)
 {
-   let inputValue= input.value //chaque inputValue représente la valeur rentrée dans un input du formulaire
-   let inputId = input.id
-    if (typeof(inputValue)==="string" && inputValue !== "") // il faut utiliser des regex pour voir si certains inputs contiennent des nombres (l'adresse et l'email peuvent en contenir mais pas les autres) et si l'email est bien un email.
+   let inputValue= input.value; //chaque inputValue représente la valeur rentrée dans un input du formulaire
+   let inputId = input.id;
+   let inputTypes ={onlyText:["firstName","lastName","city"], address:["address"], email: ["email"] }
+   onlyTextExp = new RegExp("^[A-zÀ-ú/-\\s]+$");
+   emailEXP= new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
+   addressEXP = new RegExp("^[A-zÀ-ú0-9,/-\\s]+$")
+   console.log ("inputTypes.onlyText",inputTypes.onlyText);
+
+//regex pour les champs de texte seulement
+   inputTypes.onlyText.forEach( inputType => {
+      if (inputId == inputType) 
+         {
+            if (typeof(inputValue)==="string" && inputValue !== "" && onlyTextExp.test(inputValue)) // il faut utiliser des regex pour voir si certains inputs contiennent des nombres (l'adresse et l'email peuvent en contenir mais pas les autres) et si l'email est bien un email.
+               {
+                  console.log( "inputId:", inputId, "OK")
+               }
+            else
+            {
+               console.log("inputId:", inputId, "not OK")
+            }
+         }})
+
+//regex pour les champs d'e-mail seulement
+   inputTypes.email.forEach( inputType => {
+      if (inputId == inputType) 
+         {
+            if (typeof(inputValue)==="string" && inputValue !== ""  && emailEXP.test(inputValue) ) // il faut utiliser des regex pour voir si certains inputs contiennent des nombres (l'adresse et l'email peuvent en contenir mais pas les autres) et si l'email est bien un email.
+               {
+                  console.log( "inputId:", inputId, "OK")
+               }
+            else
+            {
+               console.log("inputId:", inputId, "not OK")
+            }
+         }})
+
+//regex pour les champs d'adresse
+inputTypes.address.forEach( inputType => {
+   if (inputId == inputType) 
       {
-         console.log( inputId, "OK")
-      }
-   else
-   {
-      console.log( inputId, "not OK")
-   }
+         if (typeof(inputValue)==="string" && inputValue !== ""  && addressEXP.test(inputValue) ) // il faut utiliser des regex pour voir si certains inputs contiennent des nombres (l'adresse et l'email peuvent en contenir mais pas les autres) et si l'email est bien un email.
+            {
+               console.log( "inputId:", inputId, "OK")
+            }
+         else
+         {
+            console.log("inputId:", inputId, "not OK")
+         }
+      }})
+
 }
 
 function storageFetechedDatas(fetchedData)
