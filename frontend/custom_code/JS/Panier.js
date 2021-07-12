@@ -319,9 +319,20 @@ function collectFormDatas()
         let formInputs = Object.values(formDatas);
          formInputs.forEach( input => {
             console.log("formValue",input.id, input.value);
-            let Validation = checkValue(input)
+            let inputValidated = checkValue(input)
+            processinputs(input,inputValidated);
          })
         
+}
+
+function processinputs(input,inputValidated)
+{
+   if (inputValidated == false)
+      {
+         input.classList.add("border-danger");
+         setTimeout(() => {input.classList.remove("border-danger");}, 5000);
+      }
+   console.log("inputValidated", inputValidated);
 }
 
 function checkValue(input)
@@ -343,9 +354,10 @@ function checkValue(input)
                   console.log( "inputId:", inputId, "OK")
                }
             else
-            {
-               console.log("inputId:", inputId, "not OK")
-            }
+               {
+                  console.log("inputId:", inputId, "not OK")
+                  input = false;
+               }
          }})
 
 //regex pour les champs d'e-mail seulement
@@ -357,9 +369,10 @@ function checkValue(input)
                   console.log( "inputId:", inputId, "OK")
                }
             else
-            {
-               console.log("inputId:", inputId, "not OK")
-            }
+               {
+                  console.log("inputId:", inputId, "not OK")
+                  input = false;
+               }
          }})
 
 //regex pour les champs d'adresse
@@ -371,10 +384,13 @@ inputTypes.address.forEach( inputType => {
                console.log( "inputId:", inputId, "OK")
             }
          else
-         {
-            console.log("inputId:", inputId, "not OK")
-         }
+            {
+               console.log("inputId:", inputId, "not OK")
+               input = false;
+            }
       }})
+
+return input
 
 }
 
