@@ -269,14 +269,19 @@ console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
 passOrder.addEventListener("click",post);
 
-let contact ={
-    firstName: "string",
-   value : "string", 
-   lastName: "string", 
-   address: "string",
-   city: "string",
-   email: "string@string.com"
+let contact ={};
+
+function resetContact()
+{
+   contact= {
+   firstName: false,
+   lastName: false, 
+   address: false,
+   city: false,
+   email: false
    }
+}
+
    let products = ["5be1ed3f1c9d44000030b061","5be9c4c71c9d440000a730e9"]; //erreur 500 si le serveur ne reconnaît pas l'id.
    
    let order =
@@ -301,7 +306,7 @@ function post()
 {
    collectFormDatas();
    localStorage.setItem("c'est good?","bof")
-   console.log(requestBody)
+   //console.log(requestBody)
    fetch("http://localhost:3000/api/cameras/order",init)
    .then(res => res.json())
       .then(fetchedData => {storageFetechedDatas(fetchedData)
@@ -312,16 +317,29 @@ function post()
             //possible d'envoyer tous les id dans le même array puis de récupérer les données avec une boucle forEach"
 }
 
+//initialisation variable d'annulation du processus de traitement des données formulaire
+let inputProcessAbort = false
+
+//Cette fonction collecte les données du formulaire et annule le traitement si une donnée a été signalée false.
 function collectFormDatas()
 {
       let formDatas = document.getElementsByClassName("form-control");
       console.log("formdatas",formDatas);
         let formInputs = Object.values(formDatas);
+        inputProcessAbort = false
+        resetContact()
          formInputs.forEach( input => {
-            console.log("formValue",input.id, input.value);
-            let inputValidated = checkValue(input)
-            processinputs(input,inputValidated);
-         })
+            if (inputProcessAbort ==false){
+                  console.log("formValue",input.id, input.value);
+                  //process inputs stock les données du formulaire dans l'objet contact ou supprime le contenu de l'objet contact si une donée est fausse.
+                  let inputValidated = checkValue(input)
+                  processinputs(input,inputValidated);
+                  }
+            else
+            {
+               return contact
+            }
+      })
         
 }
 
@@ -331,8 +349,16 @@ function processinputs(input,inputValidated)
       {
          input.classList.add("border-danger");
          setTimeout(() => {input.classList.remove("border-danger");}, 5000);
+         inputProcessAbort = true;
+         contact = resetContact()
+         console.log("contact deleted", contact)
       }
-   console.log("inputValidated", inputValidated);
+   else
+      {
+         contact[inputValidated.id] = inputValidated.value;
+         console.log("input contact object getting filled", contact)
+      }
+   console.log("inputValidated", inputValidated.id, inputValidated.value);
 }
 
 function checkValue(input)
