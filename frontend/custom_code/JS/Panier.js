@@ -199,12 +199,7 @@ function sum (total, num)
 //fonction d'initialisation de la page
 function loadPage()
 {
-   let productArraysinObject = {teddies:[], cameras:[],furniture:[]};
    initBasketContainer()
-   let basketStorageTempJSON = localStorage.getItem("basketStorage")
-   let basketStorageTemp = JSON.parse(basketStorageTempJSON);
-   collectProductArray(basketStorageTemp,productArraysinObject); //Cette fonction sert à construire les products Arrays à envoyer au serveur backend
-   localStorage.setItem("basketStorageTemp", basketStorageTempJSON )
   fetchProductsdata();
 }
 
@@ -238,6 +233,7 @@ function collectProductArray(basketStorageTemp,productArraysinObject)
       console.log("product Array Stock Sorted", productArraysinObjectSorted);
    })
    console.log ("product array",basketStorageTemp);
+   return productArraysinObjectSorted
 }
 
 //Trie les produits dans 3 arrays stockés dans l'objet productArraysinObject
@@ -284,38 +280,75 @@ function resetContact()
 
    let products = ["5be1ed3f1c9d44000030b061","5be9c4c71c9d440000a730e9"]; //erreur 500 si le serveur ne reconnaît pas l'id.
    
-   let order =
-   {
-      contact : contact,
-      products: products
-   }
+
  
-   
-let requestBody= JSON.stringify(order);
-let requestHeaders = {"Content-Type":"application/json"};
-
-const init =
-{
-   method: "POST",
-   body: requestBody,
-   headers : requestHeaders,
-};
+ 
 
 
+
+
+// fonction de pilotage afin de poster les données
 function StartGatheringdatas()
 {
+   //récupération des données formulaires
    let formatedContact = collectFormDatas();
    console.log("formated Contact", formatedContact); //utiliser formated contact pour la méthode post
-   localStorage.setItem("c'est good?","bof")
-   //console.log(requestBody)
-   fetch("http://localhost:3000/api/cameras/order",init)
-   .then(res => res.json())
-      .then(fetchedData => {storageFetechedDatas(fetchedData)
-      //document.location.href="confirmation.html" //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.)
-         }) 
-      .catch(error => {console.log("POST error", error)
-                     localStorage.setItem("c'est good?","non")})
-            //possible d'envoyer tous les id dans le même array puis de récupérer les données avec une boucle forEach"
+   //récupération des données produits
+   let productArraysinObject = {teddies:[], cameras:[],furniture:[]};
+   let basketStorageTempJSON = localStorage.getItem("basketStorage")
+   let basketStorageTemp = JSON.parse(basketStorageTempJSON);
+   productArraysinObject = collectProductArray(basketStorageTemp,productArraysinObject); //Cette fonction sert à construire les products Arrays à envoyer au serveur backend
+   console.log("productArraysinObject",productArraysinObject)
+   localStorage.setItem("basketStorageTemp", basketStorageTempJSON )
+   let typestopost = Object.keys(productArraysinObject);
+   console.log("types to check",typestopost)
+
+   typestopost.forEach(typetopost => post(typetopost, productArraysinObject,formatedContact))
+   
+}
+
+//fonction qui envoie les données en fonction du type d'objet
+
+function post(type,productsObject,contact)
+{
+   console.log("post type", type)
+   URLS= 
+   {  
+      teddies:"http://localhost:3000/api/teddies",
+      cameras:"​http://localhost:3000/api/cameras",
+      furniture:"http://localhost:3000/api/furniture"
+   }
+   let products = productsObject[type];//prendre dans l'objet products l'array qui correspond au type à envoyer.
+
+   if (products.length !== 0) //vérifier que l'array n'est pas vide pour ne pas envoyer des posts sans produits.
+   {
+      console.log("products to post", products)
+      let requestBodyToStringify =
+      {
+         contact:contact,
+         products: products
+      }
+      console.log("requestBodyToStringify",requestBodyToStringify);
+      let requestBody = JSON.stringify(requestBodyToStringify);
+      let requestHeaders = {"Content-Type":"application/json"};
+      const init =
+      {
+      method: "POST",
+      body: requestBody,
+      headers : requestHeaders,
+      };
+
+
+      console.log(requestBody)
+      fetch("http://localhost:3000/api/cameras/order",init)
+      .then(res => res.json())
+         .then(fetchedData => {storageFetchedDatas(fetchedData)
+         //document.location.href="confirmation.html" //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.)
+            }) 
+         .catch(error => {console.log("POST error", error)
+                        })
+               //possible d'envoyer tous les id dans le même array puis de récupérer les données avec une boucle forEach" 
+   }
 }
 
 //initialisation variable d'annulation du processus de traitement des données formulaire
@@ -423,12 +456,12 @@ return input
 
 }
 
-function storageFetechedDatas(fetchedData)
+function storageFetchedDatas(fetchedData)
 {  
 console.log("post fetched",fetchedData.products)
          fetchedData.products.forEach(element =>
             console.log("post fetched name",element.name ))
-            localStorage.setItem("c'est good?","oui")
+
             
 }
 
