@@ -1,4 +1,3 @@
-window.alert("est-ce que le site fonctionne sans live server?");
 //Fonctions de récupération et d'affichage des images
 //Récupérer emplacements d'images cartes index dans le DOM
 

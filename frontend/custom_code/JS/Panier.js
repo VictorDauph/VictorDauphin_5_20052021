@@ -312,13 +312,14 @@ function StartGatheringdatas()
 function post(type,productsObject,contact)
 {
    console.log("post type", type)
-   URLS= 
+   let URLS= 
    {  
-      teddies:"http://localhost:3000/api/teddies",
-      cameras:"​http://localhost:3000/api/cameras",
-      furniture:"http://localhost:3000/api/furniture"
+      teddies:"http://localhost:3000/api/teddies/order",
+      cameras:"​http://localhost:3000/api/cameras/order",
+      furniture:"http://localhost:3000/api/furniture/order"
    }
    let products = productsObject[type];//prendre dans l'objet products l'array qui correspond au type à envoyer.
+   console.log("contact to post", contact)
 
    if (products.length !== 0) //vérifier que l'array n'est pas vide pour ne pas envoyer des posts sans produits.
    {
@@ -330,6 +331,7 @@ function post(type,productsObject,contact)
       }
       console.log("requestBodyToStringify",requestBodyToStringify);
       let requestBody = JSON.stringify(requestBodyToStringify);
+      console.log ("request body",requestBody)
       let requestHeaders = {"Content-Type":"application/json"};
       const init =
       {
@@ -340,7 +342,9 @@ function post(type,productsObject,contact)
 
 
       console.log(requestBody)
-      fetch("http://localhost:3000/api/cameras/order",init)
+      let URL = URLS[type];
+      console.log("URL type", URL);
+      fetch("​http://localhost:3000/api/cameras/order",init)
       .then(res => res.json())
          .then(fetchedData => {storageFetchedDatas(fetchedData)
          //document.location.href="confirmation.html" //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.)
