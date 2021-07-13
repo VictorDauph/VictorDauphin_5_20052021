@@ -267,7 +267,7 @@ function sortingProducts(productID,productType,productArraysinObject)
 let formDatas = document.getElementsByClassName("form-control");
 console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
-passOrder.addEventListener("click",post);
+passOrder.addEventListener("click",StartGatheringdatas);
 
 let contact ={};
 
@@ -302,9 +302,10 @@ const init =
 };
 
 
-function post()
+function StartGatheringdatas()
 {
-   collectFormDatas();
+   let formatedContact = collectFormDatas();
+   console.log("formated Contact", formatedContact); //utiliser formated contact pour la méthode post
    localStorage.setItem("c'est good?","bof")
    //console.log(requestBody)
    fetch("http://localhost:3000/api/cameras/order",init)
@@ -329,18 +330,20 @@ function collectFormDatas()
         inputProcessAbort = false
         resetContact()
          formInputs.forEach( input => {
-            if (inputProcessAbort ==false){
+            if (inputProcessAbort ==false)
+               {
                   console.log("formValue",input.id, input.value);
                   //process inputs stock les données du formulaire dans l'objet contact ou supprime le contenu de l'objet contact si une donée est fausse.
                   let inputValidated = checkValue(input)
                   processinputs(input,inputValidated);
-                  }
+                  
+               }
             else
             {
                return contact
             }
       })
-        
+return contact
 }
 
 function processinputs(input,inputValidated)
