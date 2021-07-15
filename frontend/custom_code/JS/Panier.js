@@ -278,15 +278,6 @@ function resetContact()
    }
 }
 
-   let products = ["5be1ed3f1c9d44000030b061","5be9c4c71c9d440000a730e9"]; //erreur 500 si le serveur ne reconnaît pas l'id.
-   
-
- 
- 
-
-
-
-
 // fonction de pilotage afin de poster les données
 function StartGatheringdatas()
 {
@@ -302,57 +293,127 @@ function StartGatheringdatas()
    localStorage.setItem("basketStorageTemp", basketStorageTempJSON )
    let typestopost = Object.keys(productArraysinObject);
    console.log("types to check",typestopost)
-
-   typestopost.forEach(typetopost => post(typetopost, productArraysinObject,formatedContact))
+   postLoop(typestopost, productArraysinObject,formatedContact)
+   console.log("posted")
+   
    
 }
 
-//fonction qui envoie les données en fonction du type d'objet
 
-function post(type,productsObject,contact)
+function postLoop(typestopost, productArraysinObject,formatedContact)
 {
-   console.log("post type", type)
-   let URLS= 
-   {  
-      teddies:"http://localhost:3000/api/teddies/order",
-      cameras:"​http://localhost:3000/api/cameras/order",
-      furniture:"http://localhost:3000/api/furniture/order"
-   }
-   let products = productsObject[type];//prendre dans l'objet products l'array qui correspond au type à envoyer.
-   console.log("contact to post", contact)
+   
+   let types=[];
+  let Map = [];
+  let MapProm=[];
+  let MapOfTypes=[Map,types];
 
-   if (products.length !== 0) //vérifier que l'array n'est pas vide pour ne pas envoyer des posts sans produits.
+  let typesMap = typestopost.map( typetopost => 
+   postConfig(typetopost, productArraysinObject,formatedContact))
+   console.log("typesMap",typesMap)
+
+   typesMap.forEach( element =>
    {
-      console.log("products to post", products)
-      let requestBodyToStringify =
-      {
-         contact:contact,
-         products: products
-      }
-      console.log("requestBodyToStringify",requestBodyToStringify);
-      let requestBody = JSON.stringify(requestBodyToStringify);
-      console.log ("request body",requestBody)
-      let requestHeaders = {"Content-Type":"application/json"};
-      const init =
-      {
-      method: "POST",
-      body: requestBody,
-      headers : requestHeaders,
-      };
-
-
-      console.log(requestBody)
-      let URL = URLS[type];
-      console.log("URL type", URL);
-      fetch("​http://localhost:3000/api/cameras/order",init)
-      .then(res => res.json())
-         .then(fetchedData => {storageFetchedDatas(fetchedData)
-         //document.location.href="confirmation.html" //la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.)
-            }) 
-         .catch(error => {console.log("POST error", error)
-                        })
-               //possible d'envoyer tous les id dans le même array puis de récupérer les données avec une boucle forEach" 
+   if (element !== false)
+   {
+      Map.push(element.postPromise)
+      types.push(element.type)
    }
+
+   })
+   console.log("Mapoftypes",MapOfTypes)
+
+Promise.all(Map).then(promises => {
+   console.log("Map Promises",promises)
+   
+   promises.forEach(promise =>{
+      let postPromise = promise
+      console.log("PostPromise", postPromise)
+     processPromises(promise.json(),types)
+    // document.location.href="confirmation.html" //la relocation dit être dans promise.all pour s'activer après la collecte des données....
+   })}).catch(err => console.log(err))
+      
+
+   function processPromises(prom,types)
+   {
+      prom.then(prom =>{
+         
+         MapProm.push(prom);
+         console.log("prom",MapProm,types)
+         localStorage.setItem("contact",JSON.stringify(prom.contact))
+        //storageFetchedDatas(prom,type)
+      })
+   }
+                  
+
+  
+/*
+   Promise.all(typesMap).then(promises => JSON.parse(promises[0]))
+   .then (res => console.log("resProm",res) )
+*/
+     
+     //document.location.href="confirmation.html"//la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.) 
+
+
+
+
+   //fonction qui envoie les données en fonction du type d'objet
+
+   function postConfig(type,productsObject,contact)
+   {
+      let postPromise
+      console.log("post type", type )
+      let URLS= 
+      {  
+         teddies:"http://localhost:3000/api/teddies/order",
+         cameras:"http://localhost:3000/api/cameras/order",
+         furniture:"http://localhost:3000/api/furniture/order"
+      }
+      let products = productsObject[type];//prendre dans l'objet products l'array qui correspond au type à envoyer.
+      console.log("contact to post", contact)
+
+      if (products.length !== 0) //vérifier que l'array n'est pas vide pour ne pas envoyer des posts sans produits.
+      {
+         console.log("products to post", products)
+         let requestBodyToStringify =
+         {
+            contact:contact,
+            products: products
+         }
+         console.log("requestBodyToStringify",requestBodyToStringify);
+         let requestBody = JSON.stringify(requestBodyToStringify);
+         console.log ("request body",requestBody)
+         let requestHeaders = {"Content-Type":"application/json"};
+         const init =
+         {
+         method: "POST",
+         body: requestBody,
+         headers : requestHeaders,
+         };
+
+
+         console.log("Post request Body",requestBody)
+         let URLtopost = URLS[type];
+         console.log("URL type", URLtopost);
+            
+         
+
+            postPromise = post(init,URLtopost,type)
+            console.log("postPromise", postPromise)
+            return {"postPromise":postPromise,"type":type}
+      }
+      else{ return false}
+      
+   
+      
+   }
+}
+
+function post(init,URLtopost,type)
+{
+   let postPromise = fetch(URLtopost,init)
+   return postPromise
+
 }
 
 //initialisation variable d'annulation du processus de traitement des données formulaire
@@ -460,13 +521,18 @@ return input
 
 }
 
-function storageFetchedDatas(fetchedData)
+function storageFetchedDatas(fetchedData,type)
 {  
 console.log("post fetched",fetchedData.products)
-         fetchedData.products.forEach(element =>
-            console.log("post fetched name",element.name ))
+         fetchedData.products.forEach(element =>{
+            console.log("post fetched name",element.name )
+            let orderConfirmContact = JSON.stringify(fetchedData.contact);
+            let orderData = JSON.stringify(fetchedData);
+            localStorage.setItem("contact",orderConfirmContact)
+            localStorage.setItem(type,orderData)
+         })
 
-            
+return new Promise((resolve) => resolve(fetchedData))      
 }
 
 
