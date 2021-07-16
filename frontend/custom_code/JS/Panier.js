@@ -263,7 +263,7 @@ function sortingProducts(productID,productType,productArraysinObject)
 let formDatas = document.getElementsByClassName("form-control");
 console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
-form.addEventListener("change",StartGatheringdatas);
+form.addEventListener("input",StartGatheringdatas);
 
 function relocate()
 {
@@ -289,14 +289,20 @@ function StartGatheringdatas()
    //récupération des données formulaires
    let formatedContact = collectFormDatas();
    console.log("formated Contact", formatedContact); //utiliser formated contact pour la méthode post
-   if (formatedContact !== undefined) //si le contact est validé, le bouton commander permet de passer àa la page suivante.
-      {
-         passOrder.addEventListener("click",relocate)
-      }
-   else
-      {
-         passOrder.addEventListener("click",dontrelocate)
-      }
+   toggleRelocate(formatedContact)
+   function toggleRelocate(formatedContact)
+   {
+      if (formatedContact !== undefined) //si le contact est validé, le bouton commander permet de passer àa la page suivante.
+         {
+            console.log("relocate allowed")
+            passOrder.addEventListener("click",relocate)
+         }
+      else if (formatedContact == undefined)
+         {
+            console.log("relocate not allowed")
+            passOrder.removeEventListener("click",relocate)
+         }
+   }
 
    //récupération des données produits
    let productArraysinObject = {teddies:[], cameras:[],furniture:[]};
@@ -309,8 +315,7 @@ function StartGatheringdatas()
    console.log("types to check",typestopost)
    postLoop(typestopost, productArraysinObject,formatedContact)
    console.log("posted")
-   function dontrelocate()
-   {console.log("dontrelocate")}
+
    
 }
 
