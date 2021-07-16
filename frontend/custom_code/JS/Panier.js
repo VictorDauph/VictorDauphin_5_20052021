@@ -263,7 +263,12 @@ function sortingProducts(productID,productType,productArraysinObject)
 let formDatas = document.getElementsByClassName("form-control");
 console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
-passOrder.addEventListener("click",StartGatheringdatas);
+form.addEventListener("change",StartGatheringdatas);
+
+function relocate()
+{
+   document.location.href="confirmation.html" //la relocation dit être dans promise.all pour s'activer après la collecte des données.... Activer l'enregistrement des données à la fin du formulaire et changer de page sur le bouton commander
+}
 
 let contact ={};
 
@@ -284,6 +289,15 @@ function StartGatheringdatas()
    //récupération des données formulaires
    let formatedContact = collectFormDatas();
    console.log("formated Contact", formatedContact); //utiliser formated contact pour la méthode post
+   if (formatedContact !== undefined) //si le contact est validé, le bouton commander permet de passer àa la page suivante.
+      {
+         passOrder.addEventListener("click",relocate)
+      }
+   else
+      {
+         passOrder.addEventListener("click",dontrelocate)
+      }
+
    //récupération des données produits
    let productArraysinObject = {teddies:[], cameras:[],furniture:[]};
    let basketStorageTempJSON = localStorage.getItem("basketStorage")
@@ -295,7 +309,8 @@ function StartGatheringdatas()
    console.log("types to check",typestopost)
    postLoop(typestopost, productArraysinObject,formatedContact)
    console.log("posted")
-   
+   function dontrelocate()
+   {console.log("dontrelocate")}
    
 }
 
@@ -307,6 +322,7 @@ function postLoop(typestopost, productArraysinObject,formatedContact)
   let Map = [];
   let MapProm=[];
   let MapOfTypes=[Map,types];
+  
 
   let typesMap = typestopost.map( typetopost => 
    postConfig(typetopost, productArraysinObject,formatedContact))
@@ -322,28 +338,45 @@ function postLoop(typestopost, productArraysinObject,formatedContact)
 
    })
    console.log("Mapoftypes",MapOfTypes)
+   let ConfirmedProductArray =[]
 
-Promise.all(Map).then(promises => {
-   console.log("Map Promises",promises)
-   
-   promises.forEach(promise =>{
-      let postPromise = promise
-      console.log("PostPromise", postPromise)
-     processPromises(promise.json(),types)
-    // document.location.href="confirmation.html" //la relocation dit être dans promise.all pour s'activer après la collecte des données....
-   })}).catch(err => console.log(err))
-      
-
-   function processPromises(prom,types)
+   PromiseAll()
+   function PromiseAll()
    {
-      prom.then(prom =>{
-         
-         MapProm.push(prom);
-         console.log("prom",MapProm,types)
-         localStorage.setItem("contact",JSON.stringify(prom.contact))
-        //storageFetchedDatas(prom,type)
-      })
+      Promise.all(Map).then(promises => {
+      console.log("Map Promises",promises)
+      
+      promises.forEach(promise =>{
+         let postPromise = promise
+         console.log("PostPromise", postPromise)
+      processPromises(promise.json(),types)
+      })}).catch(err => console.log(err))
+   
+
+      function processPromises(prom,types)
+      {
+         prom.then(prom =>{
+            
+            MapProm.push(prom);
+            console.log("Mapprom",MapProm,types)
+            localStorage.setItem("contact",JSON.stringify(prom.contact))
+            let promIndex = MapProm.indexOf(prom)
+            let promType = types[promIndex]
+            let promrow = [promType,prom.products]
+            console.log("promrow",promrow)
+            ConfirmedProductArray.push(promrow)
+            console.log("productArray",ConfirmedProductArray)
+            StorageforConfirmation(ConfirmedProductArray)
+         //storageFetchedDatas(prom,type)
+         })
+      }
+      
    }
+   function StorageforConfirmation(ConfirmedProductArray)
+   {
+      localStorage.setItem("productArray",JSON.stringify(ConfirmedProductArray))
+   }
+}
                   
 
   
@@ -352,7 +385,7 @@ Promise.all(Map).then(promises => {
    .then (res => console.log("resProm",res) )
 */
      
-     //document.location.href="confirmation.html"//la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.) 
+     //passOrder.addEventListener("click",relocate)//la redirection est JS parcequ'il y'a des tâches à effectuer avant de changer de page.) 
 
 
 
@@ -407,7 +440,7 @@ Promise.all(Map).then(promises => {
    
       
    }
-}
+
 
 function post(init,URLtopost,type)
 {
@@ -433,7 +466,9 @@ function collectFormDatas()
                   console.log("formValue",input.id, input.value);
                   //process inputs stock les données du formulaire dans l'objet contact ou supprime le contenu de l'objet contact si une donée est fausse.
                   let inputValidated = checkValue(input)
+                  console.log("inputValidated",inputValidated)
                   processinputs(input,inputValidated);
+
                   
                }
             else
@@ -441,7 +476,7 @@ function collectFormDatas()
                return contact
             }
       })
-return contact
+      return contact
 }
 
 function processinputs(input,inputValidated)
@@ -449,7 +484,7 @@ function processinputs(input,inputValidated)
    if (inputValidated == false)
       {
          input.classList.add("border-danger");
-         setTimeout(() => {input.classList.remove("border-danger");}, 5000);
+         //setTimeout(() => {input.classList.remove("border-danger");}, 5000);
          inputProcessAbort = true;
          contact = resetContact()
          console.log("contact deleted", contact)
@@ -458,8 +493,8 @@ function processinputs(input,inputValidated)
       {
          contact[inputValidated.id] = inputValidated.value;
          console.log("input contact object getting filled", contact)
+         input.classList.remove("border-danger")
       }
-   console.log("inputValidated", inputValidated.id, inputValidated.value);
 }
 
 function checkValue(input)
