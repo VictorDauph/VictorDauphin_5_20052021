@@ -24,16 +24,17 @@
             </nav>
         </header>
 
-        <main id="container" class="hero container-fluid my-5 anim">
+        <main id="container-fluid" class="hero container-fluid my-5 anim">
             <div class="row">
                 <div class=col-md-3></div>
                 <article class="col-md-6 col-12 bg-light p-3 shadow rounded">
                     <h1>Commande confirmée</h1>
-                    <p class="mt-2">
-                        Merci à vous! <br>
-                        Votre commande N°... a bien été passée.<br>
-                        Pour un montant total de ... €
+                    <p class="mt-2 mx-5">
+                        Merci à vous, <span id="firstNameContainer"></span> !<br> 
                     </p>
+                        <div id="ordersContainer" class="container"></div>
+                        <p class="mx-5">Pour un montant total de <span id="priceContainer">... </span></p>
+                    
                     <div class="mt-3 mx-auto boutonWidth"><!--<button type="submit" class="btn btn-primary ">Retour à l'accueil</button> --> <a class="btn btn-primary" href="./index.html">Retour à l'accueil </a> </div>
                 </article>
             </div>

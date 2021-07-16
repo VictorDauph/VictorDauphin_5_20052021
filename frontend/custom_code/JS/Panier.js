@@ -264,14 +264,15 @@ function sortingProducts(productID,productType,productArraysinObject)
 let formDatas = document.getElementsByClassName("form-control");
 console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
-orderContainer.addEventListener("mousein",StartGatheringdatas);
+const orderContainer = document.getElementById("orderContainer")
+orderContainer.addEventListener("mouseover",StartGatheringdatas);
 passOrder.addEventListener("focus",StartGatheringdatas);
 
 function relocate()
 {
    let contactvalidated = JSON.parse(localStorage.getItem("contact"))
    console.log("contact validated",contactvalidated)
-   if (contactvalidated !== undefined)
+   if (contactvalidated !== undefined && contactvalidated !== null)
    {
       document.location.href="confirmation.html" //la relocation dit être dans promise.all pour s'activer après la collecte des données.... Activer l'enregistrement des données à la fin du formulaire et changer de page sur le bouton commander
    }
@@ -375,7 +376,7 @@ function postLoop(typestopost, productArraysinObject,formatedContact)
             localStorage.setItem("contact",JSON.stringify(prom.contact))
             let promIndex = MapProm.indexOf(prom)
             let promType = types[promIndex]
-            let promrow = [promType,prom.products]
+            let promrow = [prom.orderId,promType,prom.products]
             console.log("promrow",promrow)
             ConfirmedProductArray.push(promrow)
             console.log("productArray",ConfirmedProductArray)
