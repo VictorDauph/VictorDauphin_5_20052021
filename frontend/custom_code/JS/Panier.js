@@ -263,7 +263,7 @@ function sortingProducts(productID,productType,productArraysinObject)
 let formDatas = document.getElementsByClassName("form-control");
 console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
-form.addEventListener("input",StartGatheringdatas);
+form.addEventListener("focusout",StartGatheringdatas);
 
 function relocate()
 {
@@ -372,7 +372,7 @@ function postLoop(typestopost, productArraysinObject,formatedContact)
             ConfirmedProductArray.push(promrow)
             console.log("productArray",ConfirmedProductArray)
             StorageforConfirmation(ConfirmedProductArray)
-         //storageFetchedDatas(prom,type)
+
          })
       }
       
@@ -561,19 +561,7 @@ return input
 
 }
 
-function storageFetchedDatas(fetchedData,type)
-{  
-console.log("post fetched",fetchedData.products)
-         fetchedData.products.forEach(element =>{
-            console.log("post fetched name",element.name )
-            let orderConfirmContact = JSON.stringify(fetchedData.contact);
-            let orderData = JSON.stringify(fetchedData);
-            localStorage.setItem("contact",orderConfirmContact)
-            localStorage.setItem(type,orderData)
-         })
 
-return new Promise((resolve) => resolve(fetchedData))      
-}
 
 
 
