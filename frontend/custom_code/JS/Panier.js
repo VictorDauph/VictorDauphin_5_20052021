@@ -185,6 +185,7 @@ function updateTotal(quantity,price) //Calcul u ntotal intermédiaire pour la li
    totalArray.push(productTotal),
    console.log("totalarray:", totalArray);
    let total = totalArray.reduce(sum,0);
+   localStorage.setItem("totalPrice",total)
    const totalDisplay = document.getElementById("total");
    const formatedTotal = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(total/100);
    totalDisplay.innerHTML = `${formatedTotal}`;
@@ -263,11 +264,17 @@ function sortingProducts(productID,productType,productArraysinObject)
 let formDatas = document.getElementsByClassName("form-control");
 console.log("formdatas",formDatas[4].value);
 const passOrder = document.getElementById("passOrder");
-form.addEventListener("focusout",StartGatheringdatas);
+orderContainer.addEventListener("mousein",StartGatheringdatas);
+passOrder.addEventListener("focus",StartGatheringdatas);
 
 function relocate()
 {
-   document.location.href="confirmation.html" //la relocation dit être dans promise.all pour s'activer après la collecte des données.... Activer l'enregistrement des données à la fin du formulaire et changer de page sur le bouton commander
+   let contactvalidated = JSON.parse(localStorage.getItem("contact"))
+   console.log("contact validated",contactvalidated)
+   if (contactvalidated !== undefined)
+   {
+      document.location.href="confirmation.html" //la relocation dit être dans promise.all pour s'activer après la collecte des données.... Activer l'enregistrement des données à la fin du formulaire et changer de page sur le bouton commander
+   }
 }
 
 let contact ={};
@@ -289,7 +296,7 @@ function StartGatheringdatas()
    //récupération des données formulaires
    let formatedContact = collectFormDatas();
    console.log("formated Contact", formatedContact); //utiliser formated contact pour la méthode post
-   toggleRelocate(formatedContact)
+   
    function toggleRelocate(formatedContact)
    {
       if (formatedContact !== undefined) //si le contact est validé, le bouton commander permet de passer àa la page suivante.
@@ -316,6 +323,7 @@ function StartGatheringdatas()
    postLoop(typestopost, productArraysinObject,formatedContact)
    console.log("posted")
 
+   toggleRelocate(formatedContact)
    
 }
 
