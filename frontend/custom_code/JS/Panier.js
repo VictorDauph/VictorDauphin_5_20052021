@@ -13,6 +13,15 @@ validate.appendChild(validateContent);
 validateContainer.appendChild(validate);
 validate.classList.add("btn-light", "col-12", "text-primary", "btn-sm");
 validate.addEventListener("click", animatebutton);
+validate.addEventListener("click",refreshPage);
+
+//animation du bouton valider au click
+function animatebutton()
+   {
+      validate.classList.add("validation-anim");
+      setTimeout(() => { validate.classList.remove("validation-anim")}, 1000);
+   }
+
 
 //classe qui permet de créer une ligne du panier à partir des données nécessaires
 class BasketLine
@@ -61,6 +70,29 @@ class BasketLine
    }
 }
 
+//fonction de réinitialisation de la page
+function refreshPage()
+{
+  let basketStorageTemp = localStorage.getItem("basketStorageTemp");
+  localStorage.setItem("basketStorage", basketStorageTemp);
+  totalArray =[];
+   loadPage();
+}
+
+//fonction d'initialisation de la page
+function loadPage()
+{
+   initBasketContainer()
+  fetchProductsdata();
+}
+
+//effacer le conteneu
+function initBasketContainer() 
+{
+   basketContainer.innerHTML = " ";
+   console.log("container initialized");
+}
+
 //Fonction qui va chercher les données necéssaires pour créer les lignes du tableau et calculer le total
  function fetchProductsdata()
 {
@@ -91,60 +123,58 @@ class BasketLine
             //console.log("price", fetchedProductPrice);
             new BasketLine(fetchedProductName,fetchedProductPrice,basketElementQuantity,fetchedProductId,cardType); //création d'une ligne
          } 
-      })})
-            
+      })})   
    })
-         
 }
  
 // fonctions de modification du buffer et du panier en local storage
 //cette fonction sert à convertir basketstorage en JSON et appelle add.
 function callBasket(buffer)
-    {
-        let basketJSON = localStorage.getItem("basketStorageTemp");
-            console.log(basketJSON);
-            if (basketJSON === null)
-            {
-                let basket = [["rien", 0, "NoType"]];
-                console.log("creating empty basket");
-                checkBufferId(basket,buffer)
-            }
-            
-            else
-            { 
-            let basket = JSON.parse(basketJSON);
-            console.log("parsing basketJSON");
-            // checkBasketQuantity(basket);
-            checkBufferId(basket,buffer)
-            }
-    }
+   {
+      let basketJSON = localStorage.getItem("basketStorageTemp");
+         console.log(basketJSON);
+         if (basketJSON === null)
+         {
+               let basket = [["rien", 0, "NoType"]];
+               console.log("creating empty basket");
+               checkBufferId(basket,buffer)
+         }
+         
+         else
+         { 
+         let basket = JSON.parse(basketJSON);
+         console.log("parsing basketJSON");
+         // checkBasketQuantity(basket);
+         checkBufferId(basket,buffer)
+         }
+   }
 
 //Cette Fonction vérifie les id et supprime les doublons
 function checkBufferId(basket,buffer)
-    {
-       
-       console.log("buffer to check:",buffer);
-        basket.forEach( basketLine => {
-            let bufferId = buffer[0]
-            let basketLineId =basketLine[0]
-            console.log("comparing ID", bufferId, basketLineId )
-            if (bufferId === basketLineId)
-                {
-                    let index = basket.indexOf(basketLine);
-                    let suppressed = basket.splice(index,1);
-                    console.log("suppressed duplicate", suppressed);
-                }
-        })
-        pushbuffertoBasket(basket,buffer)
-    } 
+{
+   
+   console.log("buffer to check:",buffer);
+   basket.forEach( basketLine => {
+      let bufferId = buffer[0]
+      let basketLineId =basketLine[0]
+      console.log("comparing ID", bufferId, basketLineId )
+      if (bufferId === basketLineId)
+            {
+               let index = basket.indexOf(basketLine);
+               let suppressed = basket.splice(index,1);
+               console.log("suppressed duplicate", suppressed);
+            }
+   })
+   pushbuffertoBasket(basket,buffer)
+} 
 
     //Cette fonction ajoute le buffer au basket 
 function pushbuffertoBasket(basket,buffer)
-    {
-        let push = basket.push(buffer);
-        console.log("basket pushed",basket);
-        checkBasketQuantity (basket);
-    }
+{
+   let push = basket.push(buffer);
+   console.log("basket pushed",basket);
+   checkBasketQuantity (basket);
+}
 
 //fonction qui vérifie qui supprime les valeurs négatives et nulles  dans le panier et l'envoie dans basketStorageTemp
 function checkBasketQuantity(basket) 
@@ -163,21 +193,9 @@ function checkBasketQuantity(basket)
     localStorage.setItem ("basketStorageTemp", JSON.stringify(basket));
 }
 
-
-//animation du bouton valider au click
-function animatebutton()
-   {
-      validate.classList.add("validation-anim");
-      setTimeout(() => { validate.classList.remove("validation-anim")}, 1000);
-   }
-
- function initBasketContainer() //effacer le conteneur
- {
-    basketContainer.innerHTML = " ";
-    console.log("container initialized");
- }
-
-function updateTotal(quantity,price) //Calcul u ntotal intermédiaire pour la ligne, l'ajoutes à l'array total puis réduit l'array en faisant la somme de ses lignes
+//fonctions de calcul du prix total du tableau
+//Calcul un total intermédiaire pour la ligne, l'ajoutes à l'array total puis réduit l'array en faisant la somme de ses lignes
+function updateTotal(quantity,price) 
 {
    const productTotal = quantity*price;
    console.log("price", price)
@@ -196,27 +214,6 @@ function sum (total, num)
 {
    return total + num;
 }
-
-//fonction d'initialisation de la page
-function loadPage()
-{
-   initBasketContainer()
-  fetchProductsdata();
-}
-
-validate.addEventListener("click",refreshPage);
-
-function refreshPage()
-{
-  let basketStorageTemp = localStorage.getItem("basketStorageTemp");
-  localStorage.setItem("basketStorage", basketStorageTemp);
-  totalArray =[];
-   loadPage();
-}
-
-
-
-
 
 //scripts formulaire et envoie données
 // récupérations données produits
@@ -244,17 +241,17 @@ function sortingProducts(productID,productType,productArraysinObject)
    if (productType == "http://localhost:3000/api/teddies")
       {
          productArraysinObject.teddies.push(productID)
-         console.log ("teddiepush product Array Stock", productArraysinObject)
+         console.log ("Array Stock", productArraysinObject)
       }
    else if (productType == "http://localhost:3000/api/cameras")
    {
       productArraysinObject.cameras.push(productID)
-      console.log ("camerapush product Array Stock", productArraysinObject)
+      console.log ("Array Stock", productArraysinObject)
    }
    else if (productType == "http://localhost:3000/api/furniture")
    {
       productArraysinObject.furniture.push(productID)
-      console.log ("furniturepush product Array Stock", productArraysinObject)
+      console.log ("Array Stock", productArraysinObject)
    }
    else {console.log("unknown type")};
    return productArraysinObject
@@ -321,11 +318,11 @@ function StartGatheringdatas()
    localStorage.setItem("basketStorageTemp", basketStorageTempJSON )
    let typestopost = Object.keys(productArraysinObject);
    console.log("types to check",typestopost)
+
+   //fetch post des données via API
    postLoop(typestopost, productArraysinObject,formatedContact)
    console.log("posted")
-
    toggleRelocate(formatedContact)
-   
 }
 
 
@@ -506,7 +503,7 @@ function processinputs(input,inputValidated)
    else
       {
          contact[inputValidated.id] = inputValidated.value;
-         console.log("input contact object getting filled", contact)
+         console.log("filling contact Object", contact)
          input.classList.remove("border-danger")
       }
 }
@@ -565,13 +562,7 @@ inputTypes.address.forEach( inputType => {
                input = false;
             }
       }})
-
 return input
-
 }
-
-
-
-
 
 loadPage();

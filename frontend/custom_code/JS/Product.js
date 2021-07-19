@@ -1,12 +1,3 @@
-/*
-URLs API
-Ours en peluche faits à la main : ​http://localhost:3000/api/teddies
-
-Caméras vintage : ​http://localhost:3000/api/cameras
-
-Meubles en chêne : ​http://localhost:3000/api/furniture
-*/
-
 //Récupérer le container d'affichage des produits.
 const productsContainer= document.getElementById("productsContainer");
 
@@ -14,7 +5,6 @@ const productsContainer= document.getElementById("productsContainer");
 const titreProduit =  document.getElementById("titreProduit");
 
 // génération de cartes produits page principale
-
 //eraseProductsContainer(); //effacer le conteneur
 function eraseProductsContainer() //effacer le conteneur
  {
@@ -22,10 +12,7 @@ function eraseProductsContainer() //effacer le conteneur
     console.log("container erased");
  }
 
-
-
 // selectDisplay prend l'URL dans le localstrorage puis la fecth et appelle la fonction d'afficgahe
-
 function selectDisplay()
     {
         let urlToFetch = localStorage.getItem("urlToFetch");
@@ -42,10 +29,9 @@ function displayProduct(urlToFetch)
         fetch(urlToFetch) 
         .then(res => res.json()) // on parse la réponse de la requête en json
         .then(data => {
-            
             data.forEach(item => {
                 let card = new productCards(urlToFetch,item,false) //cette boucle construit des instances de la classe product Cards: les cartes produits.
-                //console.log("card: ",item);
+                console.log("card: ",item);
             })     
     })} 
 
@@ -222,7 +208,6 @@ class productCards
     }                        
 }
 
-
 // fonctions de modification du buffer et du panier en local storage
 //cette fonction sert à convertir basketstorage en JSON et appelle add.
 function callBasket(buffer)
@@ -286,5 +271,5 @@ function checkBasketQuantity(basket)
     localStorage.setItem ("basketStorage", JSON.stringify(basket));
 }
 
-
-selectDisplay() //lancer la selection et l'affichage au chargement de la page.
+//lancer la selection et l'affichage au chargement de la page.
+selectDisplay() 

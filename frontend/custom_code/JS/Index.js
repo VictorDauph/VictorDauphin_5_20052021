@@ -1,6 +1,4 @@
 //Fonctions de récupération et d'affichage des images
-//Récupérer emplacements d'images cartes index dans le DOM
-
 const mainCameraImg = document.getElementById("mainCameraImg");
 const mainOakImg = document.getElementById("mainOakImg");
 const mainTeddiesImg = document.getElementById("mainTeddiesImg");

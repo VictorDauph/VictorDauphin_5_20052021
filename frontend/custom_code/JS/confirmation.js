@@ -1,8 +1,9 @@
-console.log("confirmation loaded")
-
+//fonction de pilotage de chargement de la page.
 function loadPage()
 {
+    //récupération des données dans le localStorage et stockage dans OrderObject
     let orderObject = loadlocalstorage()
+    //construction des confirmations de commande
     buildOrderConfirms(orderObject)
 }
 
@@ -21,6 +22,7 @@ function loadlocalstorage()
         products : []
     }
 
+    //construction et remplissage de orderObject
     fillOrderObject(productsArray)
     function fillOrderObject(productsArray)
     {
@@ -40,11 +42,10 @@ function loadlocalstorage()
                     productNames.push(productName)
                     console.log("product names",productNames)
                 })
-               orderObject.products.push([productType, productNames,orderId]);
+                orderObject.products.push([productType, productNames,orderId]);
             console.log("orderObject",orderObject)
 
-        })
-        
+        })  
     }
     localStorage.clear();
     return orderObject;
@@ -74,9 +75,9 @@ function buildOrderConfirms(orderObject)
         })
     }
 
+    //affichage des données dans des lignes ordonnées
 class orderLine 
 {
-
     constructor (Type,Names,Id)
     {
         //emplacements éléments
