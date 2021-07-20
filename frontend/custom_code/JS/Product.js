@@ -225,7 +225,6 @@ function callBasket(buffer)
             { 
             let basket = JSON.parse(basketJSON);
             console.log("parsing basketJSON");
-            // checkBasketQuantity(basket);
             checkBufferId(basket,buffer)
             }
     }
