@@ -1,1 +1,0 @@
-document.location.href="./frontend/custom_code/pages_HTML/index.html" 
