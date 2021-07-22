@@ -161,15 +161,46 @@ class productCards
                                 numberInputBasket.setAttribute("value","1");
                                 numberInputBasket.classList.add("w-25","mx-3"); 
 
+                                //Création zone bouton
+                                const cardButtons = document.createElement("div")
+                                customOptionsContainer.appendChild(cardButtons)
+                                cardButtons.classList.add("d-flex")
+
                                 //Création bouton valider
                                 const validate = document.createElement("button");
                                 const validateContent = document.createTextNode("Valider");
                                 validate.appendChild(validateContent);
-                                customOptionsContainer.appendChild(validate);
-                                validate.classList.add("btn-primary", "col-12", "text-light", "btn-lg");
+                                cardButtons.appendChild(validate);
+                                validate.classList.add("btn-primary", "col-5", "text-light", "btn-lg","mx-3");
+
+                                //Création bouton supprimer
+                                const deleteProduct = document.createElement("button");
+                                const deleteContent = document.createTextNode("Supprimer");
+                                deleteProduct.appendChild(deleteContent);
+                                cardButtons.appendChild(deleteProduct);
+                                deleteProduct.classList.add("btn-primary", "col-5", "text-light", "btn-lg","mx-3");
+
+                                //création zone validation textuelle
+                                const validationArea = document.createElement("p")
+                                customOptionsContainer.appendChild(validationArea)
+
+                                //texte validation
+                                const validationAreaContent = document.createTextNode("Le produit a bien été ajouté au panier")
+                                validationArea.appendChild(validationAreaContent)
+                                validationArea.classList.add("text-success", "d-none","mt-5")
+
+                                //création zone suppression textuelle
+                                const deleteArea = document.createElement("p")
+                                customOptionsContainer.appendChild(deleteArea)
+
+                                //texte suppression
+                                const deleteAreaContent = document.createTextNode("Le produit a bien été supprimé du panier")
+                                deleteArea.appendChild(deleteAreaContent)
+                                deleteArea.classList.add("text-danger","d-none","mt-5")
+
+                                //texte suppression
 
                                 //fonctions d'affichage de la carte produit sélectionnée
-                                
                                 if (selected ==false)
                                     {
                                         containerCard.addEventListener('click', selectId);
@@ -185,16 +216,35 @@ class productCards
                                         }
                                     }
                                 
-                                if (selected ==true) //surveillance bouton de validation
+                                if (selected ==true) //surveillance bouton de validation et supprimer
                                     {
                                         validate.addEventListener("click", putQuantityinBuffer);
-                                        validate.addEventListener("click", animatebutton);
+                                        validate.addEventListener("click", displayValidation);
                                         this.toggleButtons();
+                                        deleteProduct.addEventListener("click", deleteFromBuffer);
+                                        deleteProduct.addEventListener("click", displayDelete);
                                     }
-                                function animatebutton()
+                                function displayValidation()
                                 {
                                     validate.classList.add("validation-anim");
-                                    setTimeout(() => { validate.classList.remove("validation-anim")}, 1000);
+                                    setTimeout(() => { validate.classList.remove("validation-anim")}, 3000);
+                                    validationArea.classList.remove("d-none"); // nope ça marche po...
+                                    setTimeout(() => { validationArea.classList.add("d-none")}, 3000);
+                                }
+
+                                function displayDelete()
+                                {
+                                    deleteProduct.classList.add("delete-anim");
+                                    setTimeout(() => { deleteProduct.classList.remove("delete-anim")}, 3000);
+                                    deleteArea.classList.remove("d-none");
+                                    setTimeout(() => { deleteArea.classList.add("d-none")}, 3000);
+                                }
+
+                                function deleteFromBuffer()
+                                {
+                                    let bufferInCard = [idCard,0,cardType];
+                                    console.log("bufferInCard", bufferInCard);
+                                    callBasket(bufferInCard);
                                 }
 
                                 function putQuantityinBuffer()

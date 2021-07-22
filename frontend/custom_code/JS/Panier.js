@@ -11,9 +11,8 @@ const validate = document.createElement("button");
 const validateContent = document.createTextNode("Valider");
 validate.appendChild(validateContent);
 validateContainer.appendChild(validate);
-validate.classList.add("btn-light", "col-12", "text-primary", "btn-sm");
+validate.classList.add("btn-light", "col-12", "text-primary", "btn-sm","w-75","mx-auto");
 validate.addEventListener("click", animatebutton);
-validate.addEventListener("click",refreshPage);
 
 //animation du bouton valider au click
 function animatebutton()
@@ -51,15 +50,16 @@ class BasketLine
       //input de modification
       const col4 = document.createElement("td");
       row.appendChild(col4);
-      col4.classList.add("w-25");
+      col4.classList.add("w-100","d-flex","justify-content-around");
       const numberInputModif = document.createElement("input");
       col4.appendChild(numberInputModif);
       numberInputModif.setAttribute("type","number");
       numberInputModif.setAttribute("value",quantity);
-      numberInputModif.classList.add("w-75");
+      numberInputModif.classList.add("w-25");
 
       //fonctions de modification
       numberInputModif.addEventListener("change", putQuantityinBuffer);
+      
       function putQuantityinBuffer()
       {
          let quantity = numberInputModif.value;
@@ -67,16 +67,73 @@ class BasketLine
          console.log("bufferInCard", bufferInCard);
          callBasket(bufferInCard);
       }
+
+      //bouton de suppression
+      const deleteButton = document.createElement("button")
+      col4.appendChild(deleteButton)
+      const deleteButtonContent = document.createTextNode("Supprimer")
+      deleteButton.appendChild(deleteButtonContent)
+      deleteButton.classList.add("w-50");
+
+      deleteButton.addEventListener("click", deleteLine);
+      
+      function deleteLine()
+      {
+         let validation = "deletion"
+         console.log("validation",validation)
+         let quantity = 0;
+         let bufferInCard = [ID,quantity,cardType];
+         console.log("bufferInCard", bufferInCard);
+         callBasket(bufferInCard);
+         refreshPage(validation)
+      }
    }
 }
 
+validate.addEventListener("click",modifyLine);
+
+function modifyLine()
+{
+   let validation = "modification"
+   console.log("validation",validation)
+   refreshPage(validation)
+}
+
 //fonction de réinitialisation de la page
-function refreshPage()
+function refreshPage(validation)
 {
   let basketStorageTemp = localStorage.getItem("basketStorageTemp");
   localStorage.setItem("basketStorage", basketStorageTemp);
   totalArray =[];
-   loadPage();
+  confirmModification(validation)
+   loadPage()
+   
+}
+
+const validationContainer = document.getElementById("validationContainer")
+validationContainerContent = document.createTextNode("Votre commande a été modifiée avec succès")
+validationContainer.appendChild(validationContainerContent)
+validationContainer.classList.add("text-success","d-none")
+const deletionContainer = document.getElementById("deletionContainer")
+deletionContainerContent = document.createTextNode("Le produit a été supprimé avec succès")
+deletionContainer.appendChild(deletionContainerContent)
+deletionContainer.classList.add("text-danger","d-none")
+
+function confirmModification(validation)
+{
+
+   if (validation == "modification")
+      {
+         
+         validationContainer.classList.remove("d-none")
+         setTimeout(() => {validationContainer.classList.add("d-none");}, 5000);
+      }
+   else if (validation == "deletion")
+      {
+         deletionContainer.classList.remove("d-none")
+         setTimeout(() => {deletionContainer.classList.add("d-none");}, 5000);
+        
+      } 
 }
 
 //fonction d'initialisation de la page
@@ -84,6 +141,9 @@ function loadPage()
 {
    initBasketContainer()
   fetchProductsdata();
+  let formatedTotal = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(0/100);
+  const totalDisplay = document.getElementById("total");
+  totalDisplay.innerHTML = `${formatedTotal}`;
 }
 
 //effacer le conteneu
@@ -98,6 +158,7 @@ function initBasketContainer()
 {
    // Chargement basketStorage
    const basket = JSON.parse(localStorage.getItem("basketStorage"));
+   localStorage.setItem("basketStorageTemp",JSON.stringify(basket))   
    console.log("basket",basket);    
    basket.forEach( basketElement =>
    {
@@ -197,21 +258,27 @@ function checkBasketQuantity(basket)
 //Calcul un total intermédiaire pour la ligne, l'ajoutes à l'array total puis réduit l'array en faisant la somme de ses lignes
 function updateTotal(quantity,price) 
 {
+   let checkbasket = localStorage.getItem("basketStorageTemp");
+   let formatedTotal = 0;
+   const totalDisplay = document.getElementById("total");
+   console.log("checkbasket",checkbasket)
    const productTotal = quantity*price;
    console.log("price", price)
-   //console.log("producttotal", typeof productTotal);
+   console.log("quantity update", quantity)
+   console.log("producttotal", productTotal);
    totalArray.push(productTotal),
    console.log("totalarray:", totalArray);
    let total = totalArray.reduce(sum,0);
+   console.log("total update", total)
    localStorage.setItem("totalPrice",total)
-   const totalDisplay = document.getElementById("total");
-   const formatedTotal = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(total/100);
+   formatedTotal = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(total/100);
    totalDisplay.innerHTML = `${formatedTotal}`;
 }
 
 //fonction de réduction pour additionner les totaux intermédiaires dans totalArray et en faire un nombre.
 function sum (total, num)
 {
+   console.log("total sum",total, num)
    return total + num;
 }
 
@@ -295,14 +362,15 @@ function StartGatheringdatas()
    let formatedContact = collectFormDatas();
    console.log("formated Contact", formatedContact); //utiliser formated contact pour la méthode post
    
-   function toggleRelocate(formatedContact)
+   function toggleRelocate(formatedContact,basketStorageTemp)
    {
-      if (formatedContact !== undefined) //si le contact est validé, le bouton commander permet de passer àa la page suivante.
+      console.log("basketStorageTemp", basketStorageTemp)
+      if (formatedContact !== undefined && basketStorageTemp.length !== 0) //si le contact est validé, le bouton commander permet de passer àa la page suivante.
          {
             console.log("relocate allowed")
             passOrder.addEventListener("click",relocate)
          }
-      else if (formatedContact == undefined)
+      else if (formatedContact == undefined || basketStorageTemp.length == 0)
          {
             console.log("relocate not allowed")
             passOrder.removeEventListener("click",relocate)
@@ -322,7 +390,7 @@ function StartGatheringdatas()
    //fetch post des données via API
    postLoop(typestopost, productArraysinObject,formatedContact)
    console.log("posted")
-   toggleRelocate(formatedContact)
+   toggleRelocate(formatedContact,basketStorageTemp)
 }
 
 
@@ -492,6 +560,8 @@ function collectFormDatas()
 
 function processinputs(input,inputValidated)
 {
+   const errorContainer = document.getElementById("inputerror")
+   errorContainer.classList.add("text-danger")
    if (inputValidated == false)
       {
          input.classList.add("border-danger");
@@ -499,12 +569,14 @@ function processinputs(input,inputValidated)
          inputProcessAbort = true;
          contact = resetContact()
          console.log("contact deleted", contact)
+         errorContainer.innerHTML = "Formulaire incorrect"
       }
    else
       {
          contact[inputValidated.id] = inputValidated.value;
          console.log("filling contact Object", contact)
          input.classList.remove("border-danger")
+         errorContainer.innerHTML = ""
       }
 }
 

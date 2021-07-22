@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/VictorDauph/VictorDauphin_5_20052021#readme",
   "dependencies": {
-    "bootstrap": "^5.0.1"
+    "bootstrap": "^5.0.2"
   }
 }

@@ -26,8 +26,8 @@
 
         <main class="hero container-fluid my-5 anim">
             <div class="row">
-                <div class="col-xl"></div>
-                <div class="col-xl-4 col-12 col-lg-5">
+                <!-- <div class="col-xl"></div> -->
+                <div class="col-xl-6 col-12 mx-3">
                     <article class="shadow bg-light rounded p-3">
                         <h1>Panier</h1>
                         <p>Votre panier contient:</p>
@@ -69,9 +69,11 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="validationContainer"></div>
+                    <div id="deletionContainer"></div>
                 </div>
-                <div class="col-lg"></div>
-                    <aside class="col-xl-4 col-12 col-lg-5 shadow bg-light rounded p-3 mt-5 mt-lg-0 mx-lg-3 mx-xl-0">
+                <div class="col-xl"></div>
+                    <aside class="col-xl-4 col-12  shadow bg-light rounded p-3 mt-5 mt-lg-0 mx-lg-3 mx-xl-0">
                         <h2>Passez votre commande:</h2>
                         <form id="form">
                             <div class="form-group mt-3">
@@ -90,6 +92,7 @@
                                 <input type="email" class="form-control" id="email" placeholder="Email" required>
                             </div>    
                         </form>
+                        <div id="inputerror"></div>
                         <div id="orderContainer" class="p-3 w-100 d-flex boutonWidth align-item-center justify-content-center"><!--<button type="submit" class="btn btn-primary ">Commander</button> --> <button id="passOrder" class="btn btn-primary mt-5 ">Commander </button> </div>
                     </aside>
                 <div class="col-xl"></div>

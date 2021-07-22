@@ -1,6 +1,6 @@
 @import "variables_overrides";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
-
+ 
 /*
 Primary: #8F5BFE
 dark: #1F016D
@@ -131,5 +131,36 @@ a:hover, button:hover
 .validation-anim
 {
     animation: validation 1000ms;
+    animation-fill-mode: forwards;
+}
+
+//animation suppression commande
+@keyframes deletion
+{
+    0%
+    {
+      background-color: $primary;
+      border-color: $danger;
+    } 
+    20%
+    {
+        background-color: $danger;
+        border-color: $primary;
+    }
+    80%
+    {
+        background-color: $danger;
+        border-color: $danger;   
+    }
+    100%
+    {
+        background-color: $danger;
+        border-color: $primary;
+    }
+  }
+
+.delete-anim
+{
+    animation: deletion 1000ms;
     animation-fill-mode: forwards;
 }
